@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>NatureSphere — Discover Nature. Explore Our World.</title>
+  
+  <!-- SEO & Social OpenGraph Metadata -->
+  <meta name="description" content="NatureSphere is a global exploration platform documenting wildlife, marine wonders, ancient rainforests, national parks, and eco-travel destinations." />
+  <meta property="og:title" content="NatureSphere — Discover Nature. Explore Our World." />
+  <meta property="og:description" content="Explore global biodiversity, national parks, sustainable travel lodges, and oceanic depths." />
+  <meta property="og:type" content="website" />
+
+  <!-- NatureSphere Official Vector Favicon (Leaf + Globe + Wave) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23092218'/%3E%3Cpath d='M32 10 A22 22 0 0 1 54 32 C54 44.15 44.15 54 32 54 C19.85 54 10 44.15 10 32 Z' fill='%230284c7' opacity='0.25'/%3E%3Cpath d='M14 36 C22 34 26 42 36 40 C44 38 48 28 52 24 C46 36 38 46 26 48 C18 49 14 42 14 36 Z' fill='%230284c7'/%3E%3Cpath d='M32 12 C32 12 42 22 40 34 C38 46 26 50 20 48 C20 48 24 38 28 30 C32 22 32 12 32 12 Z' fill='%2310b981'/%3E%3Ccircle cx='34' cy='22' r='3' fill='%23e0f2fe'/%3E%3C/svg%3E" />
+
+  <!-- Universal Multilingual Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Sinhala:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            nsForest: '#092218',
+            nsForestSurface: '#0e3827',
+            nsFreshGreen: '#10b981',
+            nsOceanBlue: '#0284c7',
+            nsOceanDeep: '#071f30',
+            nsGold: '#f59e0b',
+            nsSand: '#fbfcfb'
+          },
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans Sinhala', 'Noto Sans Tamil', 'Noto Sans Arabic', 'Noto Sans Devanagari', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            display: ['Cinzel', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Bi-directional and RTL Language Support */
+    html[dir="rtl"] { text-align: right; }
+    html[dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+      --tw-space-x-reverse: 1;
+    }
+    
+    /* Smooth Pulse and Chart Animations */
+    .telemetry-wave {
+      stroke-dasharray: 800;
+      stroke-dashoffset: 800;
+      animation: waveFlow 4.5s ease-in-out infinite alternate;
+    }
+    @keyframes waveFlow {
+      to { stroke-dashoffset: 0; }
+    }
+  </style>
+</head>
+
+<body class="bg-[#f4f7f5] text-slate-800 antialiased font-sans selection:bg-nsForest selection:text-white">
+
+  <!-- ================= HEADER & NAVIGATION BAR ================= -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-emerald-950/10 shadow-xs transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-3">
+        
+        <!-- NatureSphere Official Brand Logo -->
+        <a href="#" class="flex items-center gap-3.5 shrink-0 group">
+          <!-- Vector Logo Icon: Earth + Leaf + Marine Wave -->
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#092218] to-[#0e3827] flex items-center justify-center p-2 shadow-md group-hover:scale-105 transition-transform duration-300">
+            <svg class="w-full h-full" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Oceanic Hemisphere -->
+              <circle cx="32" cy="32" r="28" stroke="#0284c7" stroke-width="2.5" opacity="0.4"/>
+              <path d="M10 34C18 30 24 38 34 36C44 34 48 24 54 22C48 36 40 48 26 50C17 51 12 43 10 34Z" fill="#0284c7"/>
+              <!-- Green Leaf Canopy -->
+              <path d="M32 8C32 8 46 20 44 34C42 48 28 54 20 50C20 50 25 38 30 28C35 18 32 8 32 8Z" fill="#10b981"/>
+              <!-- Ascending Wildlife Silhouette -->
+              <path d="M30 18C33 16 38 18 41 20C38 21 34 21 32 23C31 21 30 19 30 18Z" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-display font-bold text-xl tracking-wide text-nsForest">NatureSphere</span>
+            </div>
+            <p class="text-[10px] tracking-wider uppercase font-semibold text-emerald-700" id="i18n-tagline">
+              Discover Nature. Explore Our World.
+            </p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Items -->
+        <nav class="hidden lg:flex items-center gap-1 text-[13px] font-semibold text-slate-700">
+          <button onclick="setTab('all')" class="nav-tab px-3 py-2 rounded-lg bg-emerald-50 text-emerald-950 font-bold" data-tab="all" id="nav-explore">Explore</button>
+          <button onclick="setTab('wildlife')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="wildlife" id="nav-wildlife">Wild Animals</button>
+          <button onclick="setTab('marine')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="marine" id="nav-marine">Marine Life</button>
+          <button onclick="setTab('flora')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="flora" id="nav-flora">Flora & Forests</button>
+          <button onclick="setTab('wonders')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="wonders" id="nav-wonders">National Parks</button>
+          <button onclick="setTab('travel')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="travel" id="nav-travel">Destinations & Stays</button>
+          <button onclick="openModal('pledgeModal')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" id="nav-conservation">Conservation</button>
+        </nav>
+
+        <!-- Right Quick Tools: Global Search, Multilingual Switcher, Mobile Toggle -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Multilingual Search Box -->
+          <div class="relative hidden sm:block w-44 md:w-56">
+            <input 
+              type="text" 
+              id="top-search" 
+              oninput="handleSearch(this.value)"
+              placeholder="Search parks, fauna, hotels..." 
+              class="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-100 border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-800 text-slate-800 placeholder-slate-400"
+            />
+            <svg class="w-4 h-4 absolute left-3 top-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+
+          <!-- Professional Language Selector -->
+          <div class="relative">
+            <select 
+              id="language-selector" 
+              onchange="changeLanguage(this.value)"
+              class="text-xs font-semibold bg-emerald-50 text-emerald-950 border border-emerald-200 rounded-lg px-2.5 py-1.5 h-9 focus:ring-2 focus:ring-emerald-800 cursor-pointer shadow-xs outline-none"
+              aria-label="Select Language"
+            >
+              <option value="en">English (EN)</option>
+              <option value="si">සිංහල (Sinhala)</option>
+              <option value="ta">தமிழ் (Tamil)</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="ar">العربية (Arabic - RTL)</option>
+              <option value="zh">中文 (Chinese)</option>
+              <option value="ja">日本語 (Japanese)</option>
+              <option value="fr">Français (French)</option>
+              <option value="es">Español (Spanish)</option>
+              <option value="de">Deutsch (German)</option>
+            </select>
+          </div>
+
+          <!-- Mobile Hamburger -->
+          <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-nav" class="hidden lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-2">
+      <input 
+        type="text" 
+        oninput="handleSearch(this.value)"
+        placeholder="Search parks, animals, hotels..." 
+        class="w-full px-4 py-2 text-sm bg-slate-100 rounded-lg mb-3 outline-none"
+      />
+      <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+        <button onclick="setTab('all'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-emerald-950">Explore All</button>
+        <button onclick="setTab('wildlife'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700">Wild Animals</button>
+        <button onclick="setTab('marine'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700">Marine Life</button>
+        <button onclick="setTab('flora'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700">Flora & Trees</button>
+        <button onclick="setTab('wonders'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700">National Parks</button>
+        <button onclick="setTab('travel'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700">Destinations & Stays</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative bg-gradient-to-b from-[#092218] via-[#0e3827] to-[#12422f] text-white pt-16 pb-20 overflow-hidden">
+    <!-- Atmospheric subtle particle grid -->
+    <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(#10b981 1px, transparent 1px); background-size: 26px 26px;"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- NatureSphere Codex Pill -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="hero-badge">NatureSphere Global Biodiversity & Travel Registry</span>
+      </div>
+
+      <!-- Main Headline with the Official Tagline -->
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 max-w-4xl leading-tight" id="hero-title">
+        Discover Nature. Explore Our World.
+      </h1>
+      
+      <p class="text-emerald-100/80 text-sm sm:text-base lg:text-lg max-w-3xl leading-relaxed mb-8 font-light" id="hero-desc">
+        From untamed savannah predators and ancient rainforest canopies to vibrant coral reefs, breathtaking waterfalls, and verified eco-travel lodges worldwide.
+      </p>
+
+      <!-- Hero Search Bar -->
+      <div class="max-w-2xl bg-white p-2 rounded-2xl shadow-xl flex items-center gap-2 mb-10 border border-emerald-900/20">
+        <div class="pl-3 text-slate-400">
+          <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <input 
+          type="text" 
+          id="hero-search-input" 
+          oninput="handleSearch(this.value)"
+          placeholder="Search wildlife, coral reefs, national parks, or eco-lodges..." 
+          class="flex-1 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none bg-transparent"
+        />
+        <button onclick="document.getElementById('catalog-anchor').scrollIntoView({ behavior: 'smooth' })" class="px-5 py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-xs font-bold transition">
+          Explore
+        </button>
+      </div>
+
+      <!-- Live Biodiversity & Conservation Metrics -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl bg-black/35 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/10">
+        <div class="border-l-2 border-emerald-400 pl-3">
+          <p class="text-[10px] uppercase font-bold text-emerald-300/80" id="m-taxa-label">Cataloged Taxa</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold text-white">16,400</span><span class="text-emerald-400 font-bold">+</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60">Fauna, Marine & Flora</p>
+        </div>
+
+        <div class="border-l-2 border-cyan-400 pl-3">
+          <p class="text-[10px] uppercase font-bold text-cyan-300/80" id="m-parks-label">National Parks</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold text-white">194</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60">Global Protected Sanctuaries</p>
+        </div>
+
+        <div class="border-l-2 border-amber-400 pl-3">
+          <p class="text-[10px] uppercase font-bold text-amber-300/80" id="m-stays-label">Eco-Lodges & Stays</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold text-white">420</span><span class="text-amber-400 font-bold">+</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60">Certified Sustainable Stays</p>
+        </div>
+
+        <div class="border-l-2 border-teal-400 pl-3">
+          <p class="text-[10px] uppercase font-bold text-teal-300/80" id="m-patrol-label">Protected Wilderness</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold text-white">3.2M</span><span class="text-xs text-teal-300 font-bold">km²</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60">Monitored Habitats</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MAIN CATALOG (WILDLIFE, PARKS, TRAVEL & FLORA) ================= -->
+  <main id="catalog-anchor" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    
+    <!-- Filter Control Bar -->
+    <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 p-4 mb-8">
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        
+        <!-- Search Field -->
+        <div class="relative flex-1">
+          <input 
+            type="text" 
+            id="facet-search" 
+            oninput="handleSearch(this.value)"
+            placeholder="Search by common name, country, park, or eco-lodge..." 
+            class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-800 outline-none"
+          />
+          <svg class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- Filter Selects -->
+        <div class="flex flex-wrap gap-2">
+          <select id="biome-filter" onchange="runFilters()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-700 outline-none">
+            <option value="all">All Realms & Categories</option>
+            <option value="wildlife">Wild Animals</option>
+            <option value="marine">Marine & Underwater</option>
+            <option value="flora">Flora & Rainforests</option>
+            <option value="wonders">Wonders & National Parks</option>
+            <option value="travel">Eco-Destinations & Stays</option>
+          </select>
+
+          <select id="region-filter" onchange="runFilters()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-700 outline-none">
+            <option value="all">Global Regions</option>
+            <option value="Africa">Africa</option>
+            <option value="Asia">Asia</option>
+            <option value="Americas">Americas</option>
+            <option value="Oceania">Oceania</option>
+            <option value="Europe">Europe</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Real-time Status Counter -->
+      <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 pt-3 mt-3 border-t border-slate-100">
+        <div>
+          <span id="txt-viewing">Viewing:</span> <strong id="specimen-count" class="text-emerald-950 font-bold">0</strong> <span id="txt-entities">curated entities</span>
+        </div>
+        <div class="text-emerald-800 font-semibold text-[11px]">
+          ✓ NatureSphere Verified Data & Open Attribution
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIMENS & DESTINATIONS GRID CONTAINER -->
+    <div id="specimens-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+  </main>
+
+  <!-- ================= LIVE BIO-TELEMETRY SENSOR ARRAY ================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-gradient-to-r from-[#e8f4ed] via-[#dff0e6] to-[#d6ebdffe] rounded-3xl p-6 sm:p-10 border border-emerald-900/10 shadow-xs">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <div class="lg:col-span-5 space-y-4">
+          <div class="inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+            Bio-Telemetry & Habitat Telemetry
+          </div>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">
+            How NatureSphere Tracks Planetary Biomes
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Through edge-AI bioacoustic sensor arrays, solar GPS animal tracking, and oceanic hydrophones, our partner networks preserve migration corridors and support community eco-tourism in real time.
+          </p>
+        </div>
+
+        <!-- Real-time Bioacoustic Chart Widget -->
+        <div class="lg:col-span-7 bg-white rounded-2xl p-5 shadow-sm border border-emerald-900/10">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+              <span class="text-xs font-bold text-slate-800">NatureSphere Array: Serengeti Basin Sector 09</span>
+            </div>
+            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Sampled 2m ago</span>
+          </div>
+
+          <div class="py-4">
+            <svg class="w-full h-28 overflow-visible" viewBox="0 0 500 100" fill="none">
+              <path d="M0,50 Q40,10 80,50 T160,80 T240,20 T320,90 T400,30 T500,50" stroke="#092218" stroke-width="2.5" class="telemetry-wave" fill="none"/>
+              <path d="M0,50 Q60,80 120,30 T240,70 T360,20 T500,50" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+            </svg>
+            <div class="text-[11px] bg-emerald-50 text-emerald-950 font-medium px-3 py-1.5 rounded-lg flex justify-between mt-1">
+              <span>Bioacoustic Match: <strong>Loxodonta africana (Elephant Infrasound)</strong></span>
+              <span>Confidence: <strong>98.4%</strong></span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 pt-3 border-t border-slate-100 text-center text-xs">
+            <div class="bg-slate-50 p-2 rounded-xl">
+              <p class="text-[10px] text-slate-400 font-semibold uppercase">Ambient Temp</p>
+              <p class="font-bold text-slate-800">29.4 °C</p>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl">
+              <p class="text-[10px] text-slate-400 font-semibold uppercase">Wind Speed</p>
+              <p class="font-bold text-slate-800">12 km/h NE</p>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl">
+              <p class="text-[10px] text-slate-400 font-semibold uppercase">Herd Vicinity</p>
+              <p class="font-bold text-emerald-800">1.4 km</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OCEANIC DEPTHS STRATIFICATION ================= -->
+  <section class="bg-[#071f30] text-white py-14 my-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 border-b border-cyan-900/40 pb-4">
+        <span class="text-cyan-400 text-xs font-bold tracking-widest uppercase">Bathymetric Stratification</span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold mt-1 text-cyan-50">Vertical Life Zones of the Ocean</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        <div class="bg-[#0d2e47] border border-cyan-700/30 rounded-2xl p-5">
+          <span class="px-2.5 py-0.5 bg-cyan-950 text-cyan-300 font-bold rounded-full text-[10px]">0m — 200m</span>
+          <h3 class="text-base font-bold text-cyan-50 mt-2 mb-1">Epipelagic (Sunlight Zone)</h3>
+          <p class="text-cyan-200/70 leading-relaxed">High photosynthetic activity powering 90% of marine biomass. Home to vibrant coral bastions, green turtles, and dolphins.</p>
+        </div>
+        <div class="bg-[#092338] border border-cyan-700/30 rounded-2xl p-5">
+          <span class="px-2.5 py-0.5 bg-cyan-950 text-cyan-300 font-bold rounded-full text-[10px]">200m — 1,000m</span>
+          <h3 class="text-base font-bold text-cyan-50 mt-2 mb-1">Mesopelagic (Twilight Zone)</h3>
+          <p class="text-cyan-200/70 leading-relaxed">Faint indigo radiation. Site of Earth's greatest daily animal vertical migration as lanternfish rise at dusk.</p>
+        </div>
+        <div class="bg-[#051726] border border-cyan-700/30 rounded-2xl p-5">
+          <span class="px-2.5 py-0.5 bg-cyan-950 text-cyan-300 font-bold rounded-full text-[10px]">1,000m — 6,000m+</span>
+          <h3 class="text-base font-bold text-cyan-50 mt-2 mb-1">Bathypelagic & Abyss</h3>
+          <p class="text-cyan-200/70 leading-relaxed">Total darkness under hundreds of atmospheres of hydrostatic pressure. Organisms rely on chemical bioluminescence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white border-t border-slate-200 pt-16 pb-12 text-slate-600 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-200">
+        
+        <!-- NatureSphere Brand & Mission -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-nsForest flex items-center justify-center p-1.5 shadow-xs">
+              <svg class="w-full h-full" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="28" stroke="#0284c7" stroke-width="3" opacity="0.4"/>
+                <path d="M10 34C18 30 24 38 34 36C44 34 48 24 54 22C48 36 40 48 26 50C17 51 12 43 10 34Z" fill="#0284c7"/>
+                <path d="M32 8C32 8 46 20 44 34C42 48 28 54 20 50C20 50 25 38 30 28C35 18 32 8 32 8Z" fill="#10b981"/>
+              </svg>
+            </div>
+            <span class="font-display font-bold text-lg text-slate-900">NatureSphere</span>
+          </div>
+          <p class="text-slate-500 leading-relaxed max-w-sm">
+            Dedicated to inspiring global curiosity, celebrating Earth's biodiversity, and providing verified guides for nature preservation and eco-conscious travel.
+          </p>
+          <div class="pt-2">
+            <p class="font-semibold text-slate-800 text-[11px] mb-1">NatureSphere Earth Dispatch</p>
+            <form onsubmit="handleNewsletter(event)" class="flex gap-2 max-w-sm">
+              <input type="email" required placeholder="Enter your email for nature dispatches..." class="bg-slate-100 border border-slate-200 px-3 py-2 rounded-lg text-xs flex-1 outline-none focus:ring-2 focus:ring-emerald-800"/>
+              <button type="submit" class="bg-emerald-900 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-950 transition">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Curated Biomes & Realms -->
+        <div>
+          <h4 class="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">Earth Realms</h4>
+          <ul class="space-y-2">
+            <li><a href="#" onclick="filterByTerm('Rainforest')" class="hover:text-emerald-800">Tropical Rainforests</a></li>
+            <li><a href="#" onclick="filterByTerm('Coral')" class="hover:text-emerald-800">Coral Reef Sanctuaries</a></li>
+            <li><a href="#" onclick="filterByTerm('Alpine')" class="hover:text-emerald-800">Alpine & Glacial Peaks</a></li>
+            <li><a href="#" onclick="filterByTerm('Savannah')" class="hover:text-emerald-800">Savannahs & Grasslands</a></li>
+            <li><a href="#" onclick="filterByTerm('Waterfalls')" class="hover:text-emerald-800">Rivers & Waterfalls</a></li>
+          </ul>
+        </div>
+
+        <!-- Eco-Travel & Destinations -->
+        <div>
+          <h4 class="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">Travel & National Parks</h4>
+          <ul class="space-y-2">
+            <li><a href="#" onclick="filterByTerm('Sri Lanka')" class="hover:text-emerald-800">Yala & Sinharaja (Sri Lanka)</a></li>
+            <li><a href="#" onclick="filterByTerm('Tanzania')" class="hover:text-emerald-800">Serengeti (Tanzania)</a></li>
+            <li><a href="#" onclick="filterByTerm('Costa Rica')" class="hover:text-emerald-800">Monteverde (Costa Rica)</a></li>
+            <li><a href="#" onclick="filterByTerm('Lodge')" class="hover:text-emerald-800">Certified Eco-Lodges</a></li>
+            <li><a href="#" onclick="filterByTerm('Heritage')" class="hover:text-emerald-800">UNESCO World Heritage Sites</a></li>
+          </ul>
+        </div>
+
+        <!-- Foundation & Legal -->
+        <div>
+          <h4 class="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">NatureSphere Trust</h4>
+          <ul class="space-y-2">
+            <li><a href="#" onclick="openModal('aboutModal')" class="hover:text-emerald-800">About NatureSphere</a></li>
+            <li><a href="#" onclick="openModal('pledgeModal')" class="hover:text-emerald-800">Biosphere Protection Pledge</a></li>
+            <li><a href="#" onclick="openModal('contactModal')" class="hover:text-emerald-800">Field Submissions</a></li>
+            <li><a href="#" onclick="openModal('privacyModal')" class="hover:text-emerald-800">Privacy & Taxonomic Terms</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Copyright Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between pt-8 gap-4 text-[11px] text-slate-400">
+        <p>© 2026 NatureSphere Foundation. All rights reserved. Discover Nature. Explore Our World.</p>
+        <div class="flex gap-4">
+          <a href="#" onclick="openModal('privacyModal')" class="hover:text-slate-600">Privacy Framework</a>
+          <a href="#" onclick="openModal('privacyModal')" class="hover:text-slate-600">Taxonomic Terms</a>
+          <a href="#" onclick="openModal('privacyModal')" class="hover:text-slate-600">Attributions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= SPECIMEN & DESTINATION DETAIL MODAL ================= -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+      <button onclick="closeModal('detailModal')" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition">
+        ✕
+      </button>
+      <div id="modal-content-area"></div>
+    </div>
+  </div>
+
+  <!-- ================= PLEDGE & INFO MODALS ================= -->
+  <div id="pledgeModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('pledgeModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800">✕</button>
+      <h3 class="font-serif text-2xl font-bold text-slate-900 mb-2">Join the NatureSphere Pledge</h3>
+      <p class="text-xs text-slate-600 mb-4">Commit to supporting verified wildlife corridors, practicing zero-impact travel, and preserving our living planet.</p>
+      <form onsubmit="submitPledge(event)" class="space-y-3">
+        <div>
+          <label class="text-xs font-semibold text-slate-700 block mb-1">Your Name</label>
+          <input type="text" required class="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="Elena Rostova"/>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-slate-700 block mb-1">Email Address</label>
+          <input type="email" required class="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="explorer@naturesphere.org"/>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-slate-700 block mb-1">Primary Realm of Interest</label>
+          <select class="w-full text-xs px-3 py-2 border rounded-lg outline-none">
+            <option>Rainforests & Mountain Cloud Forests</option>
+            <option>Coral Reefs & Oceanic Sanctuaries</option>
+            <option>National Parks & Sustainable Eco-Lodges</option>
+            <option>Savannah Keystone Wildlife</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-emerald-900 text-white font-bold text-xs rounded-xl hover:bg-emerald-950 transition">Confirm Naturalist Pledge</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="aboutModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 max-h-[85vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-serif text-xl font-bold text-slate-900">About NatureSphere</h3>
+        <button onclick="closeModal('aboutModal')" class="text-slate-400 hover:text-slate-700">✕</button>
+      </div>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>NatureSphere</strong> is a non-profit biodiversity and sustainable nature exploration platform. Our mission is encapsulated in our motto: <em>Discover Nature. Explore Our World.</em></p>
+        <p>We bridge the gap between scientific field biology (IUCN Red List taxonomy, telemetry arrays) and ethical nature travel (national parks, certified eco-lodges, responsible wildlife observation).</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="privacyModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-serif text-xl font-bold text-slate-900">Privacy & Scientific Attribution</h3>
+        <button onclick="closeModal('privacyModal')" class="text-slate-400">✕</button>
+      </div>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>1. Wildlife Protection Privacy:</strong> Sensitive GPS coordinates for endangered taxa are obfuscated by a 25km buffer to prevent illegal poaching.</p>
+        <p><strong>2. Eco-Lodge Verification:</strong> Featured hotels and eco-stays are evaluated for renewable energy, zero single-use plastics, and local community benefits.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="contactModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-serif text-xl font-bold text-slate-900">Contact NatureSphere Desk</h3>
+        <button onclick="closeModal('contactModal')" class="text-slate-400">✕</button>
+      </div>
+      <form onsubmit="alert('Message received by NatureSphere Field Desk.'); closeModal('contactModal'); return false;" class="space-y-3">
+        <input type="text" placeholder="Your Name" class="w-full text-xs px-3 py-2 border rounded-lg" required />
+        <input type="email" placeholder="Your Email" class="w-full text-xs px-3 py-2 border rounded-lg" required />
+        <textarea placeholder="Travel inquiry or field dispatch..." rows="3" class="w-full text-xs px-3 py-2 border rounded-lg" required></textarea>
+        <button type="submit" class="w-full py-2 bg-emerald-900 text-white font-bold text-xs rounded-lg">Transmit Dispatch</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= APPLICATION ENGINE & MULTILINGUAL SCRIPT ================= -->
+  <script>
+    /* --- 1. LOCALIZED INTERFACE DICTIONARY --- */
+    const I18N = {
+      en: {
+        dir: "ltr",
+        tagline: "Discover Nature. Explore Our World.",
+        navExplore: "Explore",
+        navWildlife: "Wild Animals",
+        navMarine: "Marine Life",
+        navFlora: "Flora & Forests",
+        navWonders: "National Parks",
+        navTravel: "Destinations & Stays",
+        heroBadge: "NatureSphere Global Biodiversity & Travel Registry",
+        heroTitle: "Discover Nature. Explore Our World.",
+        heroDesc: "From untamed savannah predators and ancient rainforest canopies to vibrant coral reefs, breathtaking waterfalls, and verified eco-travel lodges worldwide.",
+        viewing: "Viewing:",
+        entities: "curated entities"
+      },
+      si: {
+        dir: "ltr",
+        tagline: "ස්වභාවධර්මය සොයාගන්න. අපගේ ලෝකය ගවේෂණය කරන්න.",
+        navExplore: "ගවේෂණය",
+        navWildlife: "වන සතුන්",
+        navMarine: "සාගර ජීවීන්",
+        navFlora: "ශාක හා වනාන්තර",
+        navWonders: "ජාතික වනෝද්‍යාන",
+        navTravel: "සංචාරක නවාතැන්",
+        heroBadge: "NatureSphere ගෝලීය ජෛව විවිධත්ව සහ සංචාරක ලේඛනය",
+        heroTitle: "ස්වභාවධර්මය සොයාගන්න. අපගේ ලෝකය ගවේෂණය කරන්න.",
+        heroDesc: "වනගත සැවානා විලෝපිකයන් සහ වැසි වනාන්තරවල සිට කොරල් පර, දියඇලි සහ තහවුරු කළ පරිසර හිතකාමී සංචාරක නවාතැන් දක්වා ගවේෂණය කරන්න.",
+        viewing: "දර්ශනය:",
+        entities: "විශේෂ සහ ගමනාන්ත"
+      },
+      ta: {
+        dir: "ltr",
+        tagline: "இயற்கையைக் கண்டறியுங்கள். நமது உலகை ஆராயுங்கள்.",
+        navExplore: "ஆராய்க",
+        navWildlife: "வன விலங்குகள்",
+        navMarine: "கடல் வாழ் உயிரினங்கள்",
+        navFlora: "தாவரங்கள் & காடுகள்",
+        navWonders: "தேசிய பூங்காக்கள்",
+        navTravel: "சுற்றுலா & தங்குமிடங்கள்",
+        heroBadge: "NatureSphere உலகளாவிய பல்லுயிர் மற்றும் பயணப் பதிவேடு",
+        heroTitle: "இயற்கையைக் கண்டறியுங்கள். நமது உலகை ஆராயுங்கள்.",
+        heroDesc: "புல்வெளி வேட்டையாடும் விலங்குகள் மற்றும் மழைக்காடுகள் முதல் பவளப்பாறைகள், நீர்வீழ்ச்சிகள் மற்றும் சூழல் நட்பு தங்குமிடங்கள் வரை ஆராயுங்கள்.",
+        viewing: "பார்வை:",
+        entities: "பதிவுசெய்யப்பட்ட தகவல்கள்"
+      },
+      ar: {
+        dir: "rtl",
+        tagline: "اكتشف الطبيعة. استكشف عالمنا.",
+        navExplore: "استكشف",
+        navWildlife: "الحيوانات البرية",
+        navMarine: "الحياة البحرية",
+        navFlora: "النباتات والغابات",
+        navWonders: "المحميات الطبيعية",
+        navTravel: "وجهات ونزل بيئية",
+        heroBadge: "سجل NatureSphere العالمي للتنوع الحيوي والسياحة البيئية",
+        heroTitle: "اكتشف الطبيعة. استكشف عالمنا.",
+        heroDesc: "من مفترسات السافانا الشاسعة والغابات الاستوائية إلى الشعاب المرجانية والشلالات الساحرة وأفضل النزل البيئية المستدامة.",
+        viewing: "عرض:",
+        entities: "عناصر موثقة"
+      },
+      zh: {
+        dir: "ltr",
+        tagline: "探索自然。遨游世界。",
+        navExplore: "探索",
+        navWildlife: "野生动物",
+        navMarine: "海洋生命",
+        navFlora: "植物与森林",
+        navWonders: "国家公园",
+        navTravel: "生态旅游与度假村",
+        heroBadge: "NatureSphere 全球生物多样性与旅行档案",
+        heroTitle: "探索自然。遨游世界。",
+        heroDesc: "从辽阔草原上的顶级捕食者、热带雨林，到绚丽珊瑚礁、壮美瀑布与全球认证生态度假酒店。",
+        viewing: "正在浏览:",
+        entities: "个精选项目"
+      },
+      ja: {
+        dir: "ltr",
+        tagline: "自然を発見し、私たちの世界を探検しよう。",
+        navExplore: "探索",
+        navWildlife: "野生動物",
+        navMarine: "海洋生物",
+        navFlora: "植物と森林",
+        navWonders: "国立公園",
+        navTravel: "旅行先＆エコ宿",
+        heroBadge: "NatureSphere 地球生物多様性＆ネイチャーツアー登録簿",
+        heroTitle: "自然を発見し、私たちの世界を探検しよう。",
+        heroDesc: "サバンナの頂点捕食者から太古の熱帯雨林、サンゴ礁、壮大な滝、認証エコホテルまで世界を探検。",
+        viewing: "表示中:",
+        entities: "件の登録情報"
+      },
+      fr: {
+        dir: "ltr",
+        tagline: "Découvrez la Nature. Explorez Notre Monde.",
+        navExplore: "Explorer",
+        navWildlife: "Faune Sauvage",
+        navMarine: "Vie Marine",
+        navFlora: "Flore & Forêts",
+        navWonders: "Parcs Nationaux",
+        navTravel: "Destinations & Éco-Lodges",
+        heroBadge: "Registre Mondial NatureSphere Biodiversité & Voyage",
+        heroTitle: "Découvrez la Nature. Explorez Notre Monde.",
+        heroDesc: "Des prédateurs des savanes aux canopées équatoriales, récifs coralliens et éco-lodges certifiés.",
+        viewing: "Affichage :",
+        entities: "éléments répertoriés"
+      },
+      es: {
+        dir: "ltr",
+        tagline: "Descubre la Naturaleza. Explora Nuestro Mundo.",
+        navExplore: "Explorar",
+        navWildlife: "Fauna Silvestre",
+        navMarine: "Vida Marina",
+        navFlora: "Flora y Bosques",
+        navWonders: "Parques Nacionales",
+        navTravel: "Destinos y Alojamientos",
+        heroBadge: "Registro Global NatureSphere de Biodiversidad y Viajes",
+        heroTitle: "Descubre la Naturaleza. Explora Nuestro Mundo.",
+        heroDesc: "De los depredadores de la sabana a las selvas antiguas, arrecifes de coral y eco-alojamientos certificados.",
+        viewing: "Viendo:",
+        entities: "elementos catalogados"
+      },
+      de: {
+        dir: "ltr",
+        tagline: "Entdecke die Natur. Erforsche unsere Welt.",
+        navExplore: "Erkunden",
+        navWildlife: "Wildtiere",
+        navMarine: "Meeresleben",
+        navFlora: "Flora & Wälder",
+        navWonders: "Nationalparks",
+        navTravel: "Reiseziele & Öko-Lodges",
+        heroBadge: "NatureSphere Globales Biodiversitäts- & Reiseregister",
+        heroTitle: "Entdecke die Natur. Erforsche unsere Welt.",
+        heroDesc: "Von Spitzenprädatoren der Savannen bis zu Urwäldern, Korallenriffen und zertifizierten Öko-Lodges weltweit.",
+        viewing: "Angezeigt:",
+        entities: "erfasste Einträge"
+      },
+      hi: {
+        dir: "ltr",
+        tagline: "प्रकृति की खोज करें। हमारी दुनिया का अन्वेषण करें।",
+        navExplore: "अन्वेषण",
+        navWildlife: "वन्यजीव",
+        navMarine: "समुद्री जीवन",
+        navFlora: "वनस्पति और वन",
+        navWonders: "राष्ट्रीय उद्यान",
+        navTravel: "गंतव्य और पर्यावरण-रिसॉर्ट्स",
+        heroBadge: "NatureSphere वैश्विक जैव विविधता और यात्रा रजिस्टर",
+        heroTitle: "प्रकृति की खोज करें। हमारी दुनिया का अन्वेषण करें।",
+        heroDesc: "सवाना के शिकारियों और वर्षावनों से लेकर प्रवाल भित्तियों, झरनों और प्रमाणित इको-लॉज तक का अन्वेषण करें।",
+        viewing: "प्रदर्शित:",
+        entities: "सूचीबद्ध प्रविष्टियां"
+      }
+    };
+
+    /* --- 2. NATURESPHERE COMPREHENSIVE DATASET --- */
+    const ITEMS = [
+      {
+        id: "african-lion",
+        category: "wildlife",
+        tag: "VU • VULNERABLE",
+        tagClass: "bg-amber-100 text-amber-900 border border-amber-300",
+        niche: "HYPERCARNIVORE",
+        location: "Serengeti & Masai Mara",
+        region: "Africa",
+        scientificName: "Panthera leo",
+        image: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
+        names: {
+          en: "African Lion",
+          si: "අප්‍රිකානු සිංහයා",
+          ta: "ஆப்பிரிக்க சிங்கம்",
+          ar: "الأسد الأفريقي",
+          zh: "非洲狮"
+        },
+        captions: {
+          en: "The sole truly social felid. Prides maintain territorial dominance across expansive open savannahs.",
+          si: "සමාජශීලී එකම බළල් විශේෂයයි. විවෘත සැවානා තෘණ භූමි තුළ තම බලය පවත්වා ගනී.",
+          ta: "கூட்டமாக வாழும் ஒரே பூனை இனம். புல்வெளிகளில் ஆதிக்கம் செலுத்துகிறது.",
+          ar: "السنور الوحيد الاجتماعي الذي يعيش في زمر متماسكة في السافانا.",
+          zh: "唯一具有高度社会性的猫科动物，依靠狮群在辽阔草原建立领地。"
+        },
+        m1Label: "SOCIAL UNIT",
+        m1Val: "Pride (Up to 40)",
+        m2Label: "POPULATION",
+        m2Val: "~23,000 mature",
+        details: "Lions regulate herbivore populations, preventing overgrazing across the East African ecosystem."
+      },
+      {
+        id: "blue-whale",
+        category: "marine",
+        tag: "EN • ENDANGERED",
+        tagClass: "bg-amber-600 text-white",
+        niche: "PELAGIC FILTER FEEDER",
+        location: "Mirissa & Polar Oceans",
+        region: "Asia",
+        scientificName: "Balaenoptera musculus",
+        image: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?auto=format&fit=crop&w=800&q=80",
+        names: {
+          en: "Blue Whale",
+          si: "නිල් තල්මසා",
+          ta: "நீலத் திமிங்கலம்",
+          ar: "الحوت الأزرق",
+          zh: "蓝鲸"
+        },
+        captions: {
+          en: "Earth's largest living animal. Consuming up to 4 metric tons of krill daily, each specimen sequesters immense atmospheric carbon.",
+          si: "පෘථිවියේ ජීවත් වන විශාලතම සත්වයා. දිනකට ක්‍රිල් ටොන් 4ක් පමණ ආහාරයට ගනී.",
+          ta: "பூமியின் மிகப் பெரிய உயிரினம். கடலின் கார்பனை சமநிலைப்படுத்துகிறது.",
+          ar: "أضخم كائن على سطح الأرض، يلعب دوراً محورياً في عزل الكربون.",
+          zh: "地球上已知最大的动物，每日滤食数吨磷虾，是海洋巨大的碳封存体。"
+        },
+        m1Label: "WEIGHT",
+        m1Val: "~190 Metric Tons",
+        m2Label: "LIFESPAN",
+        m2Val: "80 - 90 Years",
+        details: "Sri Lanka's southern coast (Mirissa) is one of the world's premier year-round observation grounds for pygmy blue whales."
+      },
+      {
+        id: "yala-park",
+        category: "wonders",
+        tag: "PROTECTED SANCTUARY",
+        tagClass: "bg-emerald-600 text-white",
+        niche: "BIODIVERSITY HOTSPOT",
+        location: "Yala National Park",
+        region: "Asia (Sri Lanka)",
+        scientificName: "IUCN Category II Protected Area",
+        image: "https://images.unsplash.com/photo-1456926631375-92c8ce872def?auto=format&fit=crop&w=800&q=80",
+        names: {
+          en: "Yala National Park",
+          si: "යාල ජාතික වනෝද්‍යානය",
+          ta: "யால தேசிய பூங்கா",
+          ar: "منتزه يالا الوطني",
+          zh: "雅拉国家公园"
+        },
+        captions: {
+          en: "Sri Lanka's premier wildlife sanctuary, famed for the world's highest recorded leopard population density and coastal lagoons.",
+          si: "ලොව ඉහළම කොටින්ගේ ඝනත්වය සහ වෙරළබඩ කලපු සහිත ශ්‍රී ලංකාවේ ප්‍රමුඛ වනෝද්‍යානය.",
+          ta: "உலகின் அதிக சிறுத்தை அடர்த்தியைக் கொண்ட இலங்கையின் முதன்மை வனவிலங்கு சரணாலயம்.",
+          ar: "أبرز المحميات في سريلانكا، تشتهر بأعلى كثافة للنمور في العالم.",
+          zh: "斯里兰卡最著名国家公园，拥有世界上密度最高的金钱豹种群和丰富的泻湖湿地。"
+        },
+        m1Label: "AREA",
+        m1Val: "979 km²",
+        m2Label: "LEOPARD DENSITY",
+        m2Val: "Highest in World",
+        details: "Includes five blocks, coastal sand dunes, monsoonal scrub jungles, and ancient monastic ruins."
+      },
+      {
+        id: "cinnamon-wild",
+        category: "travel",
+        tag: "CERTIFIED ECO-LODGE",
+        tagClass: "bg-teal-600 text-white",
+        niche: "SUSTAINABLE SAFARI STAY",
+        location: "Yala Fringe / Kirinda Beach",
+        region: "Asia (Sri Lanka)",
+        scientificName: "Wild Coast Luxury Tented Lodge",
+        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+        names: {
+          en: "Wild Coast Tented Eco-Lodge",
+          si: "වයිල්ඩ් කෝස්ට් පරිසර ලැගුම්හල",
+          ta: "வைல்ட் கோஸ்ட் சூழல் தங்குமிடம்",
+          ar: "نزل وايلد كوست البيئي الفاخر",
+          zh: "野性海岸帐篷生态度假村"
+        },
+        captions: {
+          en: "Cocoon-designed luxury eco-suites nestled where the arid jungle meets the rugged Indian Ocean. 100% solar water heating.",
+          si: "වියළි කලාපීය වනාන්තරය සහ ඉන්දියන් සාගරය හමුවන සුවිශේෂී පරිසර හිතකාමී සුඛෝපභෝගී නවාතැන.",
+          ta: "இந்தியப் பெருங்கடல் கடற்கரையில் அமைந்துள்ள இயற்கை சூழல் சார்ந்த தங்குமிடம்.",
+          ar: "أجنحة فندقية صديقة للبيئة تلتقي فيها الغابات الجافة بأمواج المحيط الهندي.",
+          zh: "位于干旱丛林与印度洋交界处的茧形豪华生态帐篷，配备海水淡化和全太阳能系统。"
+        },
+        m1Label: "SUSTAINABILITY",
+        m1Val: "Zero Single-Use Plastic",
+        m2Label: "SAFARI ACCESS",
+        m2Val: "Direct Yala Gate",
+        details: "Constructed with natural local bamboo and stone, featuring wastewater recycling for local wildlife watering holes."
+      },
+      {
+        id: "iguazu-falls",
+        category: "wonders",
+        tag: "WORLD HERITAGE",
+        tagClass: "bg-emerald-600 text-white",
+        niche: "HYDROLOGICAL MARVEL",
+        location: "Misiones & Paraná",
+        region: "Americas",
+        scientificName: "Cataratas del Iguazú",
+        image: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80",
+        names: {
+          en: "Iguazú Falls & National Park",
+          si: "ඉගුවාසු දියඇලි ජාතික උද්‍යානය",
+          ta: "இகுவாசு நீர்வீழ்ச்சி பூங்கா",
+          ar: "شلالات إجوازو والمنتزه الوطني",
+          zh: "伊瓜苏瀑布国家公园"
+        },
+        captions: {
+          en: "A semicircular cataract spanning 2.7 km, splitting the river into 275 individual waterfalls surrounded by subtropical jungle.",
+          si: "උපනිවර්තන වනාන්තරවලින් වටවූ කිලෝමීටර් 2.7ක් පුරා විහිදෙන දියඇලි 275කින් සමන්විත ස්වභාවික ආශ්චර්යයකි.",
+          ta: "2.7 கிமீ பரப்பளவில் 275 தனித்தனி நீர்வீழ்ச்சிகளைக் கொண்ட பிரம்மாண்டமான இயற்கை அதிசயம்.",
+          ar: "أكبر نظام شلالات في العالم يمتد بطول 2.7 كم عبر غابات شبه استوائية.",
+          zh: "横跨阿根廷与巴西边境的壮阔马蹄形瀑布群，拥有275道瀑布与繁茂亚热带雨林。"
+        },
+        m1Label: "FLOW RATE",
+        m1Val: "1,746 m³/s",
+        m2Label: "PLANT TAXA",
+        m2Val: "2,000+ species",
+        details: "Creates a perpetual humid microclimate that nurtures swarms of great dusky swifts and rare epiphytic orchids."
+      },
+      {
+        id: "redwood-forest",
+        category: "flora",
+        tag: "EN • ENDANGERED",
+        tagClass: "bg-amber-600 text-white",
+        niche: "CANOPY GIANT",
+        location: "California Coast",
+        region: "Americas",
+        scientificName: "Sequoia sempervirens",
+        image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80",
+        names: {
+          en: "Coast Redwood National Forest",
+          si: "රෙඩ්වුඩ් ජාතික වනාන්තරය",
+          ta: "ரெட்வுட் தேசிய காடு",
+          ar: "غابات الخشب الأحمر الساحلية",
+          zh: "加州红杉国家森林"
+        },
+        captions: {
+          en: "The tallest living trees on Earth, reaching over 115 meters. Gathers 40% of their annual moisture directly from coastal summer fog.",
+          si: "මීටර් 115කට වඩා උසට වැඩෙන පෘථිවියේ උසම ජීවී ගස්. වෙරළබඩ මිදුමෙන් ජලය උකහා ගනී.",
+          ta: "பூமியின் மிக உயரமான மரங்கள். 115 மீட்டருக்கும் அதிகமான உயரம் கொண்டவை.",
+          ar: "أطول الأشجار الحية على وجه الأرض، تمتص رطوبتها من ضباب المحيط الصيفي.",
+          zh: "地球上最高的生命体，株高超115米，依靠加州沿海夏季浓雾汲取水分。"
+        },
+        m1Label: "MAX HEIGHT",
+        m1Val: "115.92 meters",
+        m2Label: "LIFESPAN",
+        m2Val: "2,000+ years",
+        details: "Possesses fire-resistant thick tannic bark that protects ancient groves from devastating forest wildfires."
+      }
+    ];
+
+    /* --- 3. STATE & CONTROLLERS --- */
+    let currentLang = 'en';
+    let currentTab = 'all';
+    let searchQuery = '';
+
+    function changeLanguage(langKey) {
+      if (!I18N[langKey]) return;
+      currentLang = langKey;
+      const dict = I18N[langKey];
+
+      // Update layout direction for Arabic or other RTL languages
+      document.documentElement.setAttribute('dir', dict.dir);
+      document.documentElement.setAttribute('lang', langKey);
+
+      // Translate core UI labels
+      document.getElementById('i18n-tagline').innerText = dict.tagline;
+      document.getElementById('nav-explore').innerText = dict.navExplore;
+      document.getElementById('nav-wildlife').innerText = dict.navWildlife;
+      document.getElementById('nav-marine').innerText = dict.navMarine;
+      document.getElementById('nav-flora').innerText = dict.navFlora;
+      document.getElementById('nav-wonders').innerText = dict.navWonders;
+      document.getElementById('nav-travel').innerText = dict.navTravel;
+      document.getElementById('hero-badge').innerText = dict.heroBadge;
+      document.getElementById('hero-title').innerText = dict.heroTitle;
+      document.getElementById('hero-desc').innerText = dict.heroDesc;
+      document.getElementById('txt-viewing').innerText = dict.viewing;
+      document.getElementById('txt-entities').innerText = dict.entities;
+
+      renderItems();
+    }
+
+    function setTab(tabName) {
+      currentTab = tabName;
+      document.querySelectorAll('.nav-tab').forEach(b => {
+        if(b.dataset.tab === tabName) {
+          b.className = "nav-tab px-3 py-2 rounded-lg bg-emerald-50 text-emerald-950 font-bold";
+        } else if (b.dataset.tab) {
+          b.className = "nav-tab px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 font-semibold";
+        }
+      });
+      document.getElementById('biome-filter').value = tabName;
+      runFilters();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      runFilters();
+    }
+
+    function filterByTerm(term) {
+      searchQuery = term.toLowerCase();
+      document.getElementById('facet-search').value = term;
+      runFilters();
+      document.getElementById('catalog-anchor').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function runFilters() {
+      const catVal = document.getElementById('biome-filter').value;
+      const regVal = document.getElementById('region-filter').value;
+
+      const filtered = ITEMS.filter(item => {
+        const matchCat = (catVal === 'all') || (item.category === catVal);
+        const matchReg = (regVal === 'all') || item.region.includes(regVal);
+
+        // Multilingual match across English, Native Translation, and Scientific Name
+        const nameLoc = (item.names[currentLang] || item.names['en']).toLowerCase();
+        const nameEn = item.names['en'].toLowerCase();
+        const sci = item.scientificName.toLowerCase();
+        const loc = item.location.toLowerCase();
+
+        const matchSearch = !searchQuery ||
+          nameLoc.includes(searchQuery) ||
+          nameEn.includes(searchQuery) ||
+          sci.includes(searchQuery) ||
+          loc.includes(searchQuery);
+
+        return matchCat && matchReg && matchSearch;
+      });
+
+      renderItems(filtered);
+    }
+
+    function renderItems(dataset = ITEMS) {
+      const container = document.getElementById('specimens-container');
+      const counter = document.getElementById('specimen-count');
+      counter.innerText = dataset.length;
+
+      if(dataset.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-dashed border-slate-300">
+            <span class="text-3xl">🌿</span>
+            <p class="font-serif text-lg font-bold text-slate-800 mt-2">No matching nature destinations or wildlife found</p>
+            <p class="text-xs text-slate-500 mt-1">Try resetting your search query or selecting "All Realms".</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = dataset.map(item => {
+        const name = item.names[currentLang] || item.names['en'];
+        const caption = item.captions[currentLang] || item.captions['en'];
+
+        return `
+          <div onclick="openItemModal('${item.id}')" class="cursor-pointer group bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div class="relative h-56 overflow-hidden bg-slate-900">
+                <img 
+                  src="${item.image}" 
+                  alt="${name}" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
+                
+                <div class="absolute top-3 left-3 right-3 flex items-center justify-between text-[10px] font-bold">
+                  <span class="px-2 py-0.5 rounded-full ${item.tagClass}">
+                    ${item.tag}
+                  </span>
+                  <span class="px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white uppercase tracking-wider text-[9px]">
+                    ${item.niche}
+                  </span>
+                </div>
+
+                <div class="absolute bottom-3 left-3 right-3 flex items-center gap-1.5 text-white/95 text-[11px] font-medium bg-black/55 backdrop-blur-xs px-2.5 py-1 rounded-lg">
+                  <span class="truncate">${item.location} • ${item.region}</span>
+                </div>
+              </div>
+
+              <div class="p-4">
+                <div class="flex items-baseline justify-between mb-0.5">
+                  <h3 class="font-bold text-slate-900 text-lg group-hover:text-emerald-900 transition">${name}</h3>
+                  <span class="text-slate-400 text-xs">↗</span>
+                </div>
+                <p class="text-xs text-slate-500 italic mb-2">${item.scientificName}</p>
+                <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">${caption}</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 p-3 bg-slate-50 border-t border-slate-100 text-[10px] mt-auto">
+              <div>
