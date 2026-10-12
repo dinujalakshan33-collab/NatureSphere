@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>NatureSphere — Discover Nature. Explore Our World.</title>
+  
+  <meta name="description" content="NatureSphere is a global exploration platform documenting wildlife, marine wonders, ancient rainforests, national parks, and eco-travel destinations." />
+  
+  <!-- NatureSphere Official Vector Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23092218'/%3E%3Cpath d='M32 10 A22 22 0 0 1 54 32 C54 44.15 44.15 54 32 54 C19.85 54 10 44.15 10 32 Z' fill='%230284c7' opacity='0.25'/%3E%3Cpath d='M14 36 C22 34 26 42 36 40 C44 38 48 28 52 24 C46 36 38 46 26 48 C18 49 14 42 14 36 Z' fill='%230284c7'/%3E%3Cpath d='M32 12 C32 12 42 22 40 34 C38 46 26 50 20 48 C20 48 24 38 28 30 C32 22 32 12 32 12 Z' fill='%2310b981'/%3E%3C/svg%3E" />
+
+  <!-- Google Fonts: Latin, Sinhala, Tamil, Arabic, Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@400;600;700&family=Noto+Sans+Sinhala:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS & Supabase SDK -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            nsForest: '#092218',
+            nsForestSurface: '#0e3827',
+            nsFreshGreen: '#10b981',
+            nsOceanBlue: '#0284c7',
+            nsOceanDeep: '#071f30',
+            nsGold: '#f59e0b'
+          },
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans Sinhala', 'Noto Sans Tamil', 'Noto Sans Arabic', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            display: ['Cinzel', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html[dir="rtl"] { text-align: right; }
+    .telemetry-wave {
+      stroke-dasharray: 800;
+      stroke-dashoffset: 800;
+      animation: waveFlow 4.5s ease-in-out infinite alternate;
+    }
+    @keyframes waveFlow { to { stroke-dashoffset: 0; } }
+  </style>
+</head>
+
+<body class="bg-[#f4f7f5] text-slate-800 antialiased font-sans">
+
+  <!-- ================= 1. HEADER & AUTHENTICATION CONTROLS ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-950/10 shadow-xs transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-3">
+        
+        <!-- NatureSphere Brand Logo -->
+        <a href="#" class="flex items-center gap-3.5 shrink-0 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#092218] to-[#0e3827] flex items-center justify-center p-2 shadow-md group-hover:scale-105 transition-transform">
+            <svg class="w-full h-full" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="28" stroke="#0284c7" stroke-width="2.5" opacity="0.4"/>
+              <path d="M10 34C18 30 24 38 34 36C44 34 48 24 54 22C48 36 40 48 26 50C17 51 12 43 10 34Z" fill="#0284c7"/>
+              <path d="M32 8C32 8 46 20 44 34C42 48 28 54 20 50C20 50 25 38 30 28C35 18 32 8 32 8Z" fill="#10b981"/>
+            </svg>
+          </div>
+          <div>
+            <span class="font-display font-bold text-xl tracking-wide text-nsForest">NatureSphere</span>
+            <p class="text-[10px] tracking-wider uppercase font-semibold text-emerald-700" id="i18n-tagline">
+              Discover Nature. Explore Our World.
+            </p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Items -->
+        <nav class="hidden lg:flex items-center gap-1 text-[13px] font-semibold text-slate-700">
+          <button onclick="setTab('all')" class="nav-tab px-3 py-2 rounded-lg bg-emerald-50 text-emerald-950 font-bold" data-tab="all" id="nav-explore">Explore</button>
+          <button onclick="setTab('wildlife')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="wildlife" id="nav-wildlife">Wild Animals</button>
+          <button onclick="setTab('marine')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="marine" id="nav-marine">Marine Life</button>
+          <button onclick="setTab('flora')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="flora" id="nav-flora">Flora & Forests</button>
+          <button onclick="setTab('wonders')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="wonders" id="nav-wonders">National Parks</button>
+          <button onclick="setTab('travel')" class="nav-tab px-3 py-2 rounded-lg hover:bg-slate-100" data-tab="travel" id="nav-travel">Destinations & Stays</button>
+        </nav>
+
+        <!-- Right Quick Tools: Search, Language, Auth Status -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Language Selector -->
+          <select 
+            id="language-selector" 
+            onchange="changeLanguage(this.value)"
+            class="text-xs font-semibold bg-emerald-50 text-emerald-950 border border-emerald-200 rounded-lg px-2 py-1.5 h-9 focus:ring-2 focus:ring-emerald-800 outline-none"
+          >
+            <option value="en">EN</option>
+            <option value="si">සිංහල</option>
+            <option value="ta">தமிழ்</option>
+            <option value="ar">العربية (RTL)</option>
+          </select>
+
+          <!-- AUTHENTICATION STATE CONTAINER -->
+          <div id="auth-header-container" class="flex items-center gap-2">
+            <!-- Rendered by JavaScript: Sign In / Sign Up OR User Profile Avatar -->
+            <button onclick="openAuthModal('login')" class="text-xs font-semibold px-3 py-2 text-slate-700 hover:text-emerald-900 transition">
+              Log In
+            </button>
+            <button onclick="openAuthModal('signup')" class="text-xs font-bold px-3.5 py-2 bg-emerald-900 text-white rounded-lg hover:bg-emerald-950 shadow-xs transition">
+              Sign Up
+            </button>
+          </div>
+
+          <!-- Mobile Hamburger -->
+          <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 2. HERO SECTION ================= -->
+  <section class="relative bg-gradient-to-b from-[#092218] via-[#0e3827] to-[#12422f] text-white pt-14 pb-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="hero-badge">NatureSphere Global Biodiversity & Travel Registry</span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 max-w-4xl leading-tight" id="hero-title">
+        Discover Nature. Explore Our World.
+      </h1>
+      
+      <p class="text-emerald-100/80 text-sm sm:text-base lg:text-lg max-w-3xl leading-relaxed mb-8 font-light" id="hero-desc">
+        Save your favorite wildlife specimens, preserve natural reserves, and book certified eco-lodges worldwide.
+      </p>
+
+      <!-- Global Search Bar -->
+      <div class="max-w-2xl bg-white p-2 rounded-2xl shadow-xl flex items-center gap-2 mb-10 border border-emerald-900/20">
+        <div class="pl-3 text-slate-400">
+          <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <input 
+          type="text" 
+          id="hero-search-input" 
+          oninput="handleSearch(this.value)"
+          placeholder="Search wildlife, coral reefs, national parks, or eco-lodges..." 
+          class="flex-1 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none bg-transparent"
+        />
+        <button onclick="document.getElementById('catalog-anchor').scrollIntoView({ behavior: 'smooth' })" class="px-5 py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-xs font-bold transition">
+          Search
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 3. DISCOVERY CATALOG WITH BOOKMARK BUTTONS ================= -->
+  <main id="catalog-anchor" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex items-center justify-between pb-6 border-b border-slate-200 mb-6">
+      <div>
+        <h2 class="font-serif text-2xl font-bold text-slate-900">Planetary Codex & Living Directory</h2>
+        <p class="text-xs text-slate-500 mt-0.5">Click the bookmark icon on any item to save it to your private Naturalist Dashboard.</p>
+      </div>
+      <span class="text-xs text-slate-400">Count: <strong id="specimen-count" class="text-emerald-900">0</strong></span>
+    </div>
+
+    <!-- Items Grid Container -->
+    <div id="specimens-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+  </main>
+
+  <!-- ================= 4. AUTHENTICATION MODAL (LOGIN / SIGNUP / RESET) ================= -->
+  <div id="authModal" class="fixed inset-0 z-50 hidden bg-black/65 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 animate-in fade-in zoom-in duration-200">
+      
+      <!-- Close Button -->
+      <button onclick="closeModal('authModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition">
+        ✕
+      </button>
+
+      <!-- Alert / Notice Box -->
+      <div id="auth-alert" class="hidden mb-4 p-3 rounded-xl text-xs flex items-center gap-2"></div>
+
+      <!-- VIEW A: SIGN IN -->
+      <div id="auth-view-login" class="space-y-4">
+        <div>
+          <h3 class="font-serif text-2xl font-bold text-slate-900">Welcome Back</h3>
+          <p class="text-xs text-slate-500 mt-1">Log in to view your saved sanctuaries, biodiversity notes, and profile.</p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-3.5">
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Email Address</label>
+            <input type="email" id="login-email" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="naturalist@naturesphere.org" />
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide">Password</label>
+              <button type="button" onclick="switchAuthView('forgot')" class="text-[11px] text-emerald-800 font-semibold hover:underline">Forgot Password?</button>
+            </div>
+            <div class="relative">
+              <input type="password" id="login-password" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none pr-10" placeholder="••••••••" />
+              <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-700">👁</button>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-submit-login" class="w-full py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-xs font-bold transition shadow-sm">
+            Sign In to NatureSphere
+          </button>
+        </form>
+
+        <p class="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
+          New explorer? <button onclick="switchAuthView('signup')" class="text-emerald-800 font-bold hover:underline">Create a free account</button>
+        </p>
+      </div>
+
+      <!-- VIEW B: SIGN UP -->
+      <div id="auth-view-signup" class="space-y-4 hidden">
+        <div>
+          <h3 class="font-serif text-2xl font-bold text-slate-900">Create Naturalist Account</h3>
+          <p class="text-xs text-slate-500 mt-1">Join a worldwide community of conservationists and nature explorers.</p>
+        </div>
+
+        <form onsubmit="handleSignup(event)" class="space-y-3">
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Full Name</label>
+            <input type="text" id="signup-name" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="Dr. Jane Goodall" />
+          </div>
+
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Email Address</label>
+            <input type="email" id="signup-email" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="jane@wildlife.org" />
+          </div>
+
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Password (Min 8 Characters)</label>
+            <div class="relative">
+              <input type="password" id="signup-password" minlength="8" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none pr-10" placeholder="••••••••" />
+              <button type="button" onclick="togglePasswordVisibility('signup-password', this)" class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-700">👁</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" minlength="8" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="••••••••" />
+          </div>
+
+          <button type="submit" id="btn-submit-signup" class="w-full py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-xs font-bold transition shadow-sm">
+            Create Account & Send Verification
+          </button>
+        </form>
+
+        <p class="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
+          Already registered? <button onclick="switchAuthView('login')" class="text-emerald-800 font-bold hover:underline">Log in</button>
+        </p>
+      </div>
+
+      <!-- VIEW C: FORGOT PASSWORD -->
+      <div id="auth-view-forgot" class="space-y-4 hidden">
+        <div>
+          <h3 class="font-serif text-2xl font-bold text-slate-900">Reset Password</h3>
+          <p class="text-xs text-slate-500 mt-1">Enter your email and we'll transmit a secure recovery link.</p>
+        </div>
+
+        <form onsubmit="handleForgotPassword(event)" class="space-y-3.5">
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Email Address</label>
+            <input type="email" id="forgot-email" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="naturalist@naturesphere.org" />
+          </div>
+
+          <button type="submit" id="btn-submit-forgot" class="w-full py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-xs font-bold transition">
+            Send Recovery Email
+          </button>
+        </form>
+
+        <p class="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
+          Remembered password? <button onclick="switchAuthView('login')" class="text-emerald-800 font-bold hover:underline">Return to login</button>
+        </p>
+      </div>
+
+      <!-- VIEW D: UPDATE NEW PASSWORD (AFTER CLICKING RESET LINK) -->
+      <div id="auth-view-update-password" class="space-y-4 hidden">
+        <div>
+          <h3 class="font-serif text-2xl font-bold text-slate-900">Set New Password</h3>
+          <p class="text-xs text-slate-500 mt-1">Please enter your new secure password (minimum 8 characters).</p>
+        </div>
+
+        <form onsubmit="handleUpdateNewPassword(event)" class="space-y-3.5">
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">New Password</label>
+            <input type="password" id="new-password" minlength="8" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="••••••••" />
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Confirm New Password</label>
+            <input type="password" id="new-password-confirm" minlength="8" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-800 outline-none" placeholder="••••••••" />
+          </div>
+
+          <button type="submit" id="btn-submit-update" class="w-full py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-xs font-bold transition">
+            Save & Update Password
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 5. USER PROFILE & BOOKMARKS DASHBOARD DRAWER ================= -->
+  <div id="dashboardModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative border border-slate-100">
+      
+      <!-- Top Banner -->
+      <div class="relative bg-gradient-to-r from-nsForest to-nsForestSurface p-6 text-white rounded-t-3xl">
+        <button onclick="closeModal('dashboardModal')" class="absolute top-5 right-5 text-white/70 hover:text-white">✕</button>
+        
+        <div class="flex items-center gap-4">
+          <img id="dash-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Avatar" class="w-16 h-16 rounded-full border-2 border-emerald-400 object-cover shadow-md" />
+          <div>
+            <h3 id="dash-name" class="font-serif text-2xl font-bold text-white">Naturalist Explorer</h3>
+            <p id="dash-email" class="text-xs text-emerald-200/80">user@naturesphere.org</p>
+            <span class="inline-block mt-1 text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-semibold">
+              Verified Naturalist Account
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Body -->
+      <div class="p-6 space-y-6 text-xs text-slate-700">
+        
+        <!-- Profile Editor Toggle Form -->
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 uppercase text-[11px] tracking-wide">Edit Profile Details</span>
+            <span class="text-slate-400 text-[11px]">Synced with PostgreSQL</span>
+          </div>
+          <form onsubmit="handleSaveProfile(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Display Name</label>
+              <input type="text" id="edit-profile-name" class="w-full text-xs px-3 py-2 bg-white rounded-xl border border-slate-200" required />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Preferred Biome</label>
+              <input type="text" id="edit-profile-biome" class="w-full text-xs px-3 py-2 bg-white rounded-xl border border-slate-200" placeholder="e.g. Coral Reefs" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end">
+              <button type="submit" class="px-4 py-1.5 bg-emerald-900 text-white rounded-lg text-xs font-semibold hover:bg-emerald-950">
+                Save Profile Changes
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Saved Bookmarks Section -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="font-serif text-lg font-bold text-slate-900">Saved Habitats, Wildlife & Stays</h4>
+            <span id="bookmark-count-badge" class="px-2 py-0.5 bg-emerald-100 text-emerald-900 text-[10px] font-bold rounded-full">0 saved</span>
+          </div>
+          
+          <div id="bookmarks-container" class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+            <!-- Injected via JavaScript from Supabase table -->
+          </div>
+        </div>
+
+        <!-- Logout Action -->
+        <div class="pt-4 border-t border-slate-200 flex justify-between items-center">
+          <span class="text-slate-400 text-[11px]">NatureSphere Session: Active & Encrypted</span>
+          <button onclick="handleLogout()" class="px-4 py-2 bg-red-50 text-red-700 hover:bg-red-100 rounded-xl font-bold transition">
+            Sign Out
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 6. JAVASCRIPT: SUPABASE AUTH & DATA ENGINE ================= -->
+  <script>
+    /* -------------------------------------------------------------------------
+       CONFIG: Supabase Credentials (Safe to expose anon key on client-side)
+       Replace these two values with your project credentials from supabase.com
+    ------------------------------------------------------------------------- */
+    const SUPABASE_URL = "https://YOUR_SUPABASE_PROJECT_ID.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_PUBLISHABLE_KEY";
+
+    // Initialize Supabase Client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Global User and Items State
+    let currentUser = null;
+    let userBookmarks = [];
+
+    const ITEMS = [
+      {
+        id: "african-lion",
+        category: "wildlife",
+        tag: "VU • VULNERABLE",
+        tagClass: "bg-amber-100 text-amber-900 border border-amber-300",
+        niche: "HYPERCARNIVORE",
+        location: "Serengeti & Masai Mara",
+        scientificName: "Panthera leo",
+        image: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
+        title: "African Lion",
+        caption: "The sole truly social felid. Prides maintain territorial dominance across expansive open savannahs."
+      },
+      {
+        id: "blue-whale",
+        category: "marine",
+        tag: "EN • ENDANGERED",
+        tagClass: "bg-amber-600 text-white",
+        niche: "PELAGIC FILTER FEEDER",
+        location: "Mirissa & Polar Oceans",
+        scientificName: "Balaenoptera musculus",
+        image: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?auto=format&fit=crop&w=800&q=80",
+        title: "Blue Whale",
+        caption: "Earth's largest living animal. Consuming up to 4 metric tons of krill daily, sequestering atmospheric carbon."
+      },
+      {
+        id: "yala-park",
+        category: "wonders",
+        tag: "PROTECTED SANCTUARY",
+        tagClass: "bg-emerald-600 text-white",
+        niche: "BIODIVERSITY HOTSPOT",
+        location: "Yala National Park, Sri Lanka",
+        scientificName: "IUCN Category II Area",
+        image: "https://images.unsplash.com/photo-1456926631375-92c8ce872def?auto=format&fit=crop&w=800&q=80",
+        title: "Yala National Park",
+        caption: "Sri Lanka's premier wildlife sanctuary, famed for the world's highest recorded leopard population density."
+      },
+      {
+        id: "wild-coast-lodge",
+        category: "travel",
+        tag: "CERTIFIED ECO-LODGE",
+        tagClass: "bg-teal-600 text-white",
+        niche: "SUSTAINABLE SAFARI STAY",
+        location: "Yala Fringe / Kirinda Beach",
+        scientificName: "Wild Coast Luxury Tented Lodge",
+        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+        title: "Wild Coast Tented Eco-Lodge",
+        caption: "Cocoon-designed luxury eco-suites nestled where arid jungle meets the Indian Ocean. Zero single-use plastics."
+      }
+    ];
+
+    /* -------------------------------------------------------------------------
+       AUTH LIFECYCLE LISTENER (Persistent Sessions)
+    ------------------------------------------------------------------------- */
+    async function initAuth() {
+      // 1. Check existing session
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        currentUser = session.user;
+        await onUserLoggedIn(currentUser);
+      } else {
+        renderAuthHeader(null);
+      }
+
+      // 2. Listen to ongoing auth changes (login, logout, token refresh)
+      supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          currentUser = session.user;
+          await onUserLoggedIn(currentUser);
+        } else if (event === 'SIGNED_OUT') {
+          currentUser = null;
+          userBookmarks = [];
+          renderAuthHeader(null);
+          renderItems();
+        } else if (event === 'PASSWORD_RECOVERY') {
+          openAuthModal('update-password');
+        }
+      });
+
+      // 3. Detect recovery token in URL hash (#type=recovery)
+      if (window.location.hash.includes('type=recovery')) {
+        openAuthModal('update-password');
+      }
+
+      renderItems();
+    }
+
+    async function onUserLoggedIn(user) {
+      renderAuthHeader(user);
+      await fetchBookmarks();
+      renderItems();
+    }
+
+    /* -------------------------------------------------------------------------
+       HEADER RENDERING (Visitor vs. Authenticated User)
+    ------------------------------------------------------------------------- */
+    function renderAuthHeader(user) {
+      const container = document.getElementById('auth-header-container');
+      if (!user) {
+        container.innerHTML = `
+          <button onclick="openAuthModal('login')" class="text-xs font-semibold px-3 py-2 text-slate-700 hover:text-emerald-900 transition">
+            Log In
+          </button>
+          <button onclick="openAuthModal('signup')" class="text-xs font-bold px-3.5 py-2 bg-emerald-900 text-white rounded-lg hover:bg-emerald-950 shadow-xs transition">
+            Sign Up
+          </button>
+        `;
+      } else {
+        const name = user.user_metadata?.full_name || user.email.split('@')[0];
+        container.innerHTML = `
+          <button onclick="openDashboard()" class="flex items-center gap-2 p-1 pl-2 pr-3 bg-emerald-50 hover:bg-emerald-100 rounded-full border border-emerald-200 transition">
+            <span class="w-6 h-6 rounded-full bg-emerald-800 text-white text-[10px] font-bold flex items-center justify-center uppercase">
+              ${name.charAt(0)}
+            </span>
+            <span class="text-xs font-bold text-emerald-950 max-w-[100px] truncate">${name}</span>
+          </button>
+        `;
+      }
+    }
+
+    /* -------------------------------------------------------------------------
+       AUTHENTICATION ACTIONS (Signup, Login, Reset, Logout)
+    ------------------------------------------------------------------------- */
+    async function handleSignup(e) {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const pass = document.getElementById('signup-password').value;
+      const confirmPass = document.getElementById('signup-confirm-password').value;
+
+      if (pass !== confirmPass) {
+        showAuthAlert('Passwords do not match.', 'error');
+        return;
+      }
+
+      setAuthLoading('btn-submit-signup', true);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: pass,
+        options: {
+          data: { full_name: name },
+          emailRedirectTo: window.location.origin
+        }
+      });
+      setAuthLoading('btn-submit-signup', false);
+
+      if (error) {
+        showAuthAlert(error.message, 'error');
+      } else {
+        showAuthAlert('Account created! A confirmation email has been dispatched. Please verify your inbox before logging in.', 'success');
+        e.target.reset();
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      setAuthLoading('btn-submit-login', true);
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      setAuthLoading('btn-submit-login', false);
+
+      if (error) {
+        showAuthAlert(error.message, 'error');
+      } else {
+        closeModal('authModal');
+      }
+    }
+
+    async function handleForgotPassword(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgot-email').value.trim();
+
+      setAuthLoading('btn-submit-forgot', true);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/#type=recovery`
+      });
+      setAuthLoading('btn-submit-forgot', false);
+
+      // Security practice: Always show safe confirmation without leaking account existence
+      showAuthAlert('If an account exists with this email, a password recovery link has been sent.', 'success');
+    }
+
+    async function handleUpdateNewPassword(e) {
+      e.preventDefault();
+      const p1 = document.getElementById('new-password').value;
+      const p2 = document.getElementById('new-password-confirm').value;
+
+      if (p1 !== p2) {
+        showAuthAlert('Passwords do not match.', 'error');
+        return;
+      }
+
+      setAuthLoading('btn-submit-update', true);
+      const { error } = await supabase.auth.updateUser({ password: p1 });
+      setAuthLoading('btn-submit-update', false);
+
+      if (error) {
+        showAuthAlert(error.message, 'error');
+      } else {
+        showAuthAlert('Password updated successfully! You may now sign in.', 'success');
+        setTimeout(() => switchAuthView('login'), 1500);
+      }
+    }
+
+    async function handleLogout() {
+      await supabase.auth.signOut();
+      closeModal('dashboardModal');
+    }
+
+    /* -------------------------------------------------------------------------
+       BOOKMARKING SYSTEM (PERSISTENT WITH SUPABASE RLS)
+    ------------------------------------------------------------------------- */
+    async function fetchBookmarks() {
+      if (!currentUser) return;
+      const { data, error } = await supabase
+        .from('user_bookmarks')
+        .select('*')
+        .eq('user_id', currentUser.id);
+
+      if (!error && data) {
+        userBookmarks = data;
+      }
+    }
+
+    async function toggleBookmark(itemId, e) {
+      e.stopPropagation();
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+
+      const existing = userBookmarks.find(b => b.item_id === itemId);
+      const item = ITEMS.find(i => i.id === itemId);
+
+      if (existing) {
+        // Delete bookmark
+        const { error } = await supabase
+          .from('user_bookmarks')
+          .delete()
+          .eq('id', existing.id);
+
+        if (!error) {
+          userBookmarks = userBookmarks.filter(b => b.id !== existing.id);
+        }
+      } else if (item) {
+        // Insert bookmark
+        const { data, error } = await supabase
+          .from('user_bookmarks')
+          .insert({
+            user_id: currentUser.id,
+            item_id: item.id,
+            item_title: item.title,
+            item_category: item.category,
+            item_image: item.image,
+            item_location: item.location
+          })
+          .select();
+
+        if (!error && data) {
+          userBookmarks.push(data[0]);
+        }
+      }
+
+      renderItems();
+      renderDashboardBookmarks();
+    }
+
+    function isBookmarked(itemId) {
+      return userBookmarks.some(b => b.item_id === itemId);
+    }
+
+    /* -------------------------------------------------------------------------
+       DASHBOARD AND PROFILE UPDATES
+    ------------------------------------------------------------------------- */
+    async function openDashboard() {
+      if (!currentUser) return;
+
+      document.getElementById('dash-name').innerText = currentUser.user_metadata?.full_name || 'Naturalist Explorer';
+      document.getElementById('dash-email').innerText = currentUser.email;
+      document.getElementById('edit-profile-name').value = currentUser.user_metadata?.full_name || '';
+
+      // Fetch extended profile data from public.profiles
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single();
+
+      if (profile) {
+        document.getElementById('dash-name').innerText = profile.full_name;
+        document.getElementById('edit-profile-name').value = profile.full_name;
+        document.getElementById('edit-profile-biome').value = profile.preferred_biome || '';
+      }
+
+      renderDashboardBookmarks();
+      openModal('dashboardModal');
+    }
+
+    function renderDashboardBookmarks() {
+      const container = document.getElementById('bookmarks-container');
+      const badge = document.getElementById('bookmark-count-badge');
+      badge.innerText = `${userBookmarks.length} saved`;
+
+      if (userBookmarks.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center bg-slate-50 border border-dashed border-slate-300 rounded-xl">
+            <p class="text-xs text-slate-500">You haven't saved any wildlife specimens or destinations yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = userBookmarks.map(b => `
+        <div class="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+          <div class="flex items-center gap-3">
+            <img src="${b.item_image}" class="w-12 h-12 rounded-lg object-cover" />
+            <div>
+              <p class="font-bold text-slate-900">${b.item_title}</p>
+              <p class="text-[10px] text-slate-500">${b.item_location || b.item_category}</p>
+            </div>
+          </div>
+          <button onclick="toggleBookmark('${b.item_id}', event)" class="text-red-500 hover:text-red-700 text-xs font-semibold px-2">
+            Remove
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function handleSaveProfile(e) {
+      e.preventDefault();
+      const newName = document.getElementById('edit-profile-name').value.trim();
+      const newBiome = document.getElementById('edit-profile-biome').value.trim();
+
+      // Update both auth metadata and profiles row
+      await supabase.auth.updateUser({ data: { full_name: newName } });
+      await supabase.from('profiles').update({
+        full_name: newName,
+        preferred_biome: newBiome
+      }).eq('id', currentUser.id);
+
+      document.getElementById('dash-name').innerText = newName;
+      renderAuthHeader(currentUser);
+      alert('Profile successfully updated.');
+    }
+
+    /* -------------------------------------------------------------------------
+       ITEM CATALOG RENDERING
+    ------------------------------------------------------------------------- */
+    function renderItems() {
+      const container = document.getElementById('specimens-container');
+      const countEl = document.getElementById('specimen-count');
+      countEl.innerText = ITEMS.length;
+
+      container.innerHTML = ITEMS.map(item => {
+        const bookmarked = isBookmarked(item.id);
+        return `
+          <div class="group bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="relative h-52 overflow-hidden bg-slate-900">
+                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
+                
+                <div class="absolute top-3 left-3 right-3 flex items-center justify-between text-[10px] font-bold">
+                  <span class="px-2 py-0.5 rounded-full ${item.tagClass}">${item.tag}</span>
+                  
+                  <!-- Interactive Bookmark Heart/Pin -->
+                  <button onclick="toggleBookmark('${item.id}', event)" class="w-7 h-7 rounded-full ${bookmarked ? 'bg-emerald-600 text-white' : 'bg-black/50 text-white'} flex items-center justify-center hover:scale-110 transition shadow-sm" title="Save to Profile">
+                    ${bookmarked ? '★' : '☆'}
+                  </button>
+                </div>
+
+                <div class="absolute bottom-3 left-3 right-3 text-white/90 text-[11px] bg-black/50 backdrop-blur-xs px-2.5 py-1 rounded-lg truncate">
+                  ${item.location}
+                </div>
+              </div>
+
+              <div class="p-4">
+                <h3 class="font-bold text-slate-900 text-base">${item.title}</h3>
+                <p class="text-xs text-slate-500 italic mb-1">${item.scientificName}</p>
+                <p class="text-xs text-slate-600 line-clamp-2">${item.caption}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* -------------------------------------------------------------------------
+       MODAL & UI UTILITIES
+    ------------------------------------------------------------------------- */
+    function openAuthModal(view) {
+      switchAuthView(view);
+      openModal('authModal');
+    }
+
+    function switchAuthView(view) {
+      hideAuthAlert();
+      document.getElementById('auth-view-login').classList.add('hidden');
+      document.getElementById('auth-view-signup').classList.add('hidden');
+      document.getElementById('auth-view-forgot').classList.add('hidden');
+      document.getElementById('auth-view-update-password').classList.add('hidden');
+
+      if (view === 'login') document.getElementById('auth-view-login').classList.remove('hidden');
+      if (view === 'signup') document.getElementById('auth-view-signup').classList.remove('hidden');
+      if (view === 'forgot') document.getElementById('auth-view-forgot').classList.remove('hidden');
+      if (view === 'update-password') document.getElementById('auth-view-update-password').classList.remove('hidden');
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerText = '🔒';
+      } else {
+        input.type = 'password';
+        btn.innerText = '👁';
+      }
+    }
+
+    function showAuthAlert(msg, type) {
+      const box = document.getElementById('auth-alert');
+      box.innerText = msg;
+      box.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-emerald-50', 'text-emerald-700');
+      if (type === 'error') {
+        box.classList.add('bg-red-50', 'text-red-700', 'border', 'border-red-200');
+      } else {
+        box.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200');
+      }
+    }
+
+    function hideAuthAlert() {
+      document.getElementById('auth-alert').classList.add('hidden');
+    }
+
+    function setAuthLoading(buttonId, isLoading) {
+      const btn = document.getElementById(buttonId);
+      if (isLoading) {
+        btn.disabled = true;
+        btn.dataset.original = btn.innerText;
+        btn.innerText = 'Communicating with Secure Server...';
+      } else {
+        btn.disabled = false;
+        btn.innerText = btn.dataset.original || 'Submit';
+      }
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function setTab(tab) { /* tab switching logic */ }
+    function changeLanguage(lang) { /* language switching logic */ }
+    function handleSearch(q) { /* search query logic */ }
+    function toggleMobileNav() { /* mobile drawer toggle */ }
+
+    // Bootstrap app on window load
+    window.addEventListener('DOMContentLoaded', initAuth);
+  </script>
+</body>
+</html>
