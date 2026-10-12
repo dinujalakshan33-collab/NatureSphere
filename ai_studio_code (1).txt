@@ -1,0 +1,8 @@
+Incoming Request: GET /auth/callback
+                       │
+             Does /auth/callback exist on disk?
+                    ├── YES ──► Return that file
+                    └── NO  ──► Check vercel.json rewrites
+                                      │
+                                      ├── Rewrite exists ──► Serve /index.html (Browser JS handles it)
+                                      └── No rewrite     ──► Return 404 NOT_FOUND
