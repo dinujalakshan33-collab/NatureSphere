@@ -1,0 +1,25 @@
+                         ┌────────────────────────────────────────────────────────┐
+                         │               Client (Browser / PWA)                   │
+                         │  - Language Selector with Native Scripts               │
+                         │  - Auto-detection (navigator.languages) + Cache        │
+                         │  - Bidi / RTL layout switcher (dir="rtl" / dir="ltr")  │
+                         │  - Script font loader (Noto Sans Sinhala/Tamil/Arabic) │
+                         └──────────────────────────┬─────────────────────────────┘
+                                                    │
+                                  ┌─────────────────┴─────────────────┐
+                                  ▼                                   ▼
+             ┌──────────────────────────────────┐   ┌──────────────────────────────────┐
+             │ UI Locale Catalogs (/locales/*.json)│   │  Taxonomic Query Engine          │
+             │ - Navigation, Buttons, Footers    │   │  - Multi-script Indexing         │
+             │ - Pluralization & Interpolation  │   │  - Binomial Latin Retention      │
+             │ - Strict Fallback to English      │   │  - Translation Status Badges     │
+             └──────────────────────────────────┘   └─────────────────┬────────────────┘
+                                                                      │
+                                                    ┌─────────────────┴─────────────────┐
+                                                    ▼                                   ▼
+                                    ┌───────────────────────────────┐   ┌──────────────────────────────┐
+                                    │ PostgreSQL / Supabase Schema  │   │ Server API (/api/translate)  │
+                                    │ - Normalized translation tabs │   │ - Controlled publishing pipe │
+                                    │ - Verification lifecycle flags│   │ - Google Cloud / DeepL edge  │
+                                    │ - Content hashes for caching  │   │ - Redis translation cache    │
+                                    └───────────────────────────────┘   └──────────────────────────────┘
