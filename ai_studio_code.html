@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>NatureWorld — Explore Our Living Planet</title>
+  
+  <!-- Tailwind CSS & Inter Font -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            nwDark: '#0b1d16',
+            nwForest: '#123024',
+            nwSurface: '#193f31',
+            nwAccent: '#2ec4b6',
+            nwGold: '#e9c46a',
+            nwDanger: '#e76f51',
+            nwBlue: '#0f2b38',
+            nwDeepOcean: '#091823'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            display: ['Cinzel', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom Scrollbar and RTL Tweaks */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0b1d16; }
+    ::-webkit-scrollbar-thumb { background: #1f4e3c; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2ec4b6; }
+    
+    [dir="rtl"] { text-align: right; }
+    [dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+      --tw-space-x-reverse: 1;
+    }
+    
+    .wave-animation {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: dash 5s linear infinite alternate;
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: 0; }
+    }
+  </style>
+</head>
+
+<body class="bg-[#f4f7f5] text-slate-800 antialiased font-sans transition-colors duration-300">
+
+  <!-- ================= TOP NOTIFICATION / SYSTEM BAR ================= -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-emerald-950/10 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-4">
+        
+        <!-- Brand Logo -->
+        <a href="#" class="flex items-center gap-3 shrink-0 group">
+          <div class="w-11 h-11 rounded-full bg-emerald-900 flex items-center justify-center text-emerald-300 shadow-md group-hover:bg-emerald-800 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-display font-bold text-xl tracking-wide text-emerald-950">NatureWorld</span>
+            </div>
+            <p class="text-[10px] tracking-widest uppercase font-semibold text-emerald-700" id="i18n-subbrand">Explore Our Living Planet</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden xl:flex items-center gap-1 text-[13px] font-medium text-slate-700">
+          <button onclick="setTab('all')" class="nav-tab px-3 py-2 rounded-lg hover:text-emerald-900 hover:bg-emerald-50 transition active-tab text-emerald-900 font-semibold" data-tab="all" id="nav-all">Explore</button>
+          <button onclick="setTab('wildlife')" class="nav-tab px-3 py-2 rounded-lg hover:text-emerald-900 hover:bg-emerald-50 transition" data-tab="wildlife" id="nav-wildlife">Wild Animals</button>
+          <button onclick="setTab('marine')" class="nav-tab px-3 py-2 rounded-lg hover:text-emerald-900 hover:bg-emerald-50 transition" data-tab="marine" id="nav-marine">Marine Life</button>
+          <button onclick="setTab('flora')" class="nav-tab px-3 py-2 rounded-lg hover:text-emerald-900 hover:bg-emerald-50 transition" data-tab="flora" id="nav-flora">Flora & Rainforests</button>
+          <button onclick="setTab('wonders')" class="nav-tab px-3 py-2 rounded-lg hover:text-emerald-900 hover:bg-emerald-50 transition" data-tab="wonders" id="nav-wonders">Natural Wonders</button>
+          <button onclick="setTab('conservation')" class="nav-tab px-3 py-2 rounded-lg hover:text-emerald-900 hover:bg-emerald-50 transition" data-tab="conservation" id="nav-conservation">Conservation</button>
+        </nav>
+
+        <!-- Right Quick Controls: Search, Lang, Mobile Menu -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Global Search Input in Header -->
+          <div class="relative hidden md:block w-48 lg:w-60">
+            <input 
+              type="text" 
+              id="top-search" 
+              oninput="handleSearch(this.value)"
+              placeholder="Search taxa, habitats..." 
+              class="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-100 border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-700 text-slate-800 placeholder-slate-400"
+            />
+            <svg class="w-4 h-4 absolute left-3 top-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+
+          <!-- Language Selector -->
+          <div class="relative">
+            <select 
+              id="language-selector" 
+              onchange="changeLanguage(this.value)"
+              class="text-xs font-medium bg-emerald-50 text-emerald-950 border border-emerald-200 rounded-lg px-2.5 py-1.8 h-9 focus:ring-2 focus:ring-emerald-700 cursor-pointer shadow-sm outline-none"
+            >
+              <option value="en">English (EN)</option>
+              <option value="si">සිංහල (Sinhala)</option>
+              <option value="ta">தமிழ் (Tamil)</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="ar">العربية (Arabic - RTL)</option>
+              <option value="zh">中文 (Chinese)</option>
+              <option value="ja">日本語 (Japanese)</option>
+              <option value="fr">Français (French)</option>
+              <option value="es">Español (Spanish)</option>
+              <option value="de">Deutsch (German)</option>
+            </select>
+          </div>
+
+          <!-- Join Conservation CTA -->
+          <button onclick="openModal('pledgeModal')" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold tracking-wide text-white bg-emerald-900 hover:bg-emerald-950 rounded-lg shadow transition active:scale-95" id="btn-join">
+            <svg class="w-3.5 h-3.5 text-emerald-300" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+            </svg>
+            <span id="txt-join">Join Conservation</span>
+          </button>
+
+          <!-- Mobile Hamburger -->
+          <button onclick="toggleMobileNav()" class="xl:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav" class="hidden xl:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-2">
+      <input 
+        type="text" 
+        oninput="handleSearch(this.value)"
+        placeholder="Search taxa, parks, flowers..." 
+        class="w-full px-4 py-2 text-sm bg-slate-100 rounded-lg mb-3 outline-none"
+      />
+      <div class="grid grid-cols-2 gap-2 text-sm">
+        <button onclick="setTab('all'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-emerald-900 font-medium">Explore All</button>
+        <button onclick="setTab('wildlife'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700 font-medium">Wild Animals</button>
+        <button onclick="setTab('marine'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700 font-medium">Marine Life</button>
+        <button onclick="setTab('flora'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700 font-medium">Flora & Forests</button>
+        <button onclick="setTab('wonders'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700 font-medium">Natural Wonders</button>
+        <button onclick="setTab('conservation'); toggleMobileNav()" class="text-left px-3 py-2 rounded-md hover:bg-emerald-50 text-slate-700 font-medium">Conservation</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION (MATCHING SCREENSHOT 1 & 2) ================= -->
+  <section class="relative bg-gradient-to-b from-[#0b2019] via-[#0f2d23] to-[#143a2d] text-white pt-16 pb-20 overflow-hidden">
+    <!-- Atmospheric background grid & glow -->
+    <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(#2ec4b6 1px, transparent 1px); background-size: 28px 28px;"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Codex Header Pill -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 text-xs tracking-wider uppercase font-medium mb-5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="hero-tag">Terrestrial Fauna & Hydro-Biosphere Codex</span>
+        <span class="text-emerald-500/50">•</span>
+        <span class="text-emerald-200/70" id="hero-subtag">Vol. IV : Global Ecosystems</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 max-w-4xl leading-tight" id="hero-title">
+        Wild Animals & Living Wonders of the Earth
+      </h1>
+      
+      <p class="text-emerald-100/80 text-sm sm:text-base lg:text-lg max-w-3xl leading-relaxed mb-10 font-light" id="hero-desc">
+        From apex predators reigning over open grasslands to secretive montane ghosts, coral bastions, and ancient trees—explore the terrestrial and oceanic keystone species orchestrating our living biosphere.
+      </p>
+
+      <!-- Key Global Metrics Pill (As seen in Screenshot 1) -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl bg-black/30 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/10">
+        <div class="border-l-2 border-emerald-400 pl-3">
+          <p class="text-[10px] uppercase font-semibold text-emerald-300/80 tracking-wider" id="m-taxa-label">Monitored Taxa</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold tracking-tight text-white">14,280</span>
+            <span class="text-emerald-400 font-bold">+</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60" id="m-taxa-sub">Terrestrial & Aquatic</p>
+        </div>
+
+        <div class="border-l-2 border-teal-400 pl-3">
+          <p class="text-[10px] uppercase font-semibold text-teal-300/80 tracking-wider" id="m-biomes-label">Primary Biomes</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold tracking-tight text-white">8 Global</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60" id="m-biomes-sub">Equatorial to Pelagic</p>
+        </div>
+
+        <div class="border-l-2 border-amber-400 pl-3">
+          <p class="text-[10px] uppercase font-semibold text-amber-300/80 tracking-wider" id="m-iucn-label">IUCN Red List Focus</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold tracking-tight text-white">41%</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60" id="m-iucn-sub">Under active surveillance</p>
+        </div>
+
+        <div class="border-l-2 border-cyan-400 pl-3">
+          <p class="text-[10px] uppercase font-semibold text-cyan-300/80 tracking-wider" id="m-ranger-label">Protected Patrol</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span class="text-2xl font-bold tracking-tight text-white">3.2M</span>
+            <span class="text-xs text-cyan-300 font-bold">km²</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/60" id="m-ranger-sub">Protected wilderness</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= DYNAMIC EXPLORATION CATALOG SECTION ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    
+    <!-- Filter Control Bar (Recreated from Screenshot) -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 mb-8">
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        
+        <!-- Search Field -->
+        <div class="relative flex-1">
+          <input 
+            type="text" 
+            id="filter-search" 
+            oninput="handleSearch(this.value)"
+            placeholder="Search by common name, genus, country or park..." 
+            class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-700 focus:bg-white outline-none transition"
+          />
+          <svg class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+
+        <!-- Filter Selects -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          
+          <!-- Category / Biome Filter -->
+          <select id="biome-filter" onchange="applyFilters()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-700 outline-none">
+            <option value="all">All Biomes</option>
+            <option value="wildlife">Wild Fauna</option>
+            <option value="marine">Pelagic & Reefs</option>
+            <option value="flora">Flora & Trees</option>
+            <option value="birds">Birds & Insects</option>
+            <option value="wonders">Wonders & Parks</option>
+          </select>
+
+          <!-- Threat Status Filter -->
+          <select id="status-filter" onchange="applyFilters()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-700 outline-none">
+            <option value="all">All Threat Statuses</option>
+            <option value="CR">Critically Endangered</option>
+            <option value="EN">Endangered</option>
+            <option value="VU">Vulnerable</option>
+            <option value="NT">Near Threatened</option>
+            <option value="LC">Least Concern</option>
+          </select>
+
+          <!-- Continent / Region Filter -->
+          <select id="region-filter" onchange="applyFilters()" class="col-span-2 sm:col-span-1 text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-700 outline-none">
+            <option value="all">Global Continents</option>
+            <option value="Africa">Africa</option>
+            <option value="Asia">Asia</option>
+            <option value="Americas">Americas</option>
+            <option value="Oceania">Oceania</option>
+            <option value="Europe">Europe</option>
+            <option value="Oceans">Global Oceans</option>
+          </select>
+        </div>
+
+        <!-- Layout View Toggle -->
+        <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl self-end lg:self-center shrink-0">
+          <button id="view-mosaic" onclick="setView('mosaic')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white shadow-sm text-emerald-950 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            <span>Mosaic</span>
+          </button>
+          <button id="view-encyclo" onclick="setView('encyclo')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-emerald-950 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span>Encyclopedia</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Live Results Metadata Bar -->
+      <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 pt-3 mt-3 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+          <span>Viewing: <strong id="specimen-count" class="text-emerald-950 font-bold">12</strong> cataloged entities</span>
+          <span>•</span>
+          <span class="text-emerald-700 font-medium">Verified Taxonomy: IUCN Red List 2025.2</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>Sort by:</span>
+          <span class="font-semibold text-slate-800">Trophic Impact & Rarity</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIMENS GRID CONTAINER -->
+    <div id="specimens-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Injected via JavaScript from rich live taxonomy database -->
+    </div>
+
+  </main>
+
+  <!-- ================= LIVE BIO-TELEMETRY & SENSOR SECTION (AS IN SCREENSHOT 1) ================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="bg-gradient-to-r from-[#eef6f2] via-[#e6f0eb] to-[#e1eee6] rounded-3xl p-6 sm:p-10 border border-emerald-900/10 shadow-sm">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <div class="lg:col-span-5 space-y-4">
+          <div class="inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+            Bio-Telemetry & Habitat Telemetry
+          </div>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">
+            How Field Naturalists Track Terrestrial & Oceanic Biomes
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Through solar GPS collars, non-invasive scat DNA sequencing, edge-AI bioacoustic sensor arrays, and ocean hydrophones, international wildlife coalitions preserve migration corridors and halt poaching in real time.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2 text-xs font-semibold text-emerald-900">
+            <span class="inline-flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg border border-emerald-900/10 shadow-xs">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              4,120 Audio Nodes Active
+            </span>
+            <span class="inline-flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg border border-emerald-900/10 shadow-xs">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              Real-time Anti-Poach Guard
+            </span>
+          </div>
+        </div>
+
+        <!-- Real-time Bioacoustic Chart Widget (As in Screenshot 1) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl p-5 shadow-md border border-emerald-900/10">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+              <span class="text-xs font-bold text-slate-800">Live Acoustic Array: Serengeti Basin Sector 09</span>
+            </div>
+            <span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Sampled 2m ago</span>
+          </div>
+
+          <!-- Waveform SVG -->
+          <div class="py-4 relative">
+            <svg class="w-full h-32 overflow-visible" viewBox="0 0 500 120" fill="none">
+              <path d="M0,60 Q50,10 100,60 T200,90 T300,20 T400,100 T500,60" stroke="#123024" stroke-width="2.5" fill="none" class="wave-animation"/>
+              <path d="M0,60 Q70,90 140,40 T280,100 T380,40 T500,60" stroke="#2ec4b6" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/>
+              <circle cx="250" cy="55" r="5" fill="#e76f51" />
+              <text x="260" y="55" fill="#123024" font-size="10" font-weight="600">2.5 kHz (Lion Roar Fundamental)</text>
+              <text x="30" y="25" fill="#123024" font-size="9">20 Hz (Infra-sound Elephant)</text>
+              <text x="360" y="115" fill="#123024" font-size="9">18 kHz (Insect Chorus)</text>
+            </svg>
+            <div class="text-[11px] bg-emerald-50 text-emerald-950 font-medium px-3 py-1.5 rounded-lg mt-2 flex justify-between">
+              <span>Detected: <strong>Loxodonta infrasound herd communication</strong></span>
+              <span>Confidence: <strong>96.4%</strong></span>
+            </div>
+          </div>
+
+          <!-- Telemetry Mini Metric Pills -->
+          <div class="grid grid-cols-3 gap-3 pt-3 border-t border-slate-100 text-center">
+            <div class="bg-slate-50 p-2 rounded-xl">
+              <p class="text-[10px] text-slate-500 uppercase font-medium">Ambient Temp</p>
+              <p class="text-base font-bold text-slate-800">29.4 °C</p>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl">
+              <p class="text-[10px] text-slate-500 uppercase font-medium">Wind Speed</p>
+              <p class="text-base font-bold text-slate-800">12 km/h NE</p>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl">
+              <p class="text-[10px] text-slate-500 uppercase font-medium">Herd Vicinity</p>
+              <p class="text-base font-bold text-emerald-800">1.4 km</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OCEANIC DEPTHS & VERTICAL STRATIFICATION (SCREENSHOT 2) ================= -->
+  <section class="bg-[#0b1d28] text-white py-16 my-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-cyan-900/40">
+        <div>
+          <span class="text-cyan-400 text-xs font-bold tracking-widest uppercase">Bathymetric Stratification</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold mt-1 text-cyan-50">Vertical Life Zones of the Ocean</h2>
+        </div>
+        <p class="text-xs sm:text-sm text-cyan-200/70 max-w-md">
+          Solar radiation attenuates rapidly with depth, establishing distinct biochemical gradients that shape physiological adaptations from bioluminescence to gigantism.
+        </p>
+      </div>
+
+      <!-- The 3 Oceanic Depth Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Epipelagic -->
+        <div class="bg-[#0f2838] border border-cyan-700/30 rounded-2xl p-6 relative overflow-hidden group hover:border-cyan-400/50 transition">
+          <div class="flex justify-between items-start mb-4">
+            <span class="text-2xl">☀️</span>
+            <span class="px-2.5 py-1 bg-cyan-950/80 text-cyan-300 text-[10px] font-bold rounded-full border border-cyan-500/30">0m — 200m</span>
+          </div>
+          <h3 class="text-lg font-bold text-cyan-50 mb-1">Epipelagic Zone</h3>
+          <p class="text-xs text-cyan-200/60 mb-6">The Sunlight Zone. High photosynthetic activity powering 90% of all marine life biomass.</p>
+          <div class="grid grid-cols-2 gap-2 text-[11px] pt-4 border-t border-cyan-900/50">
+            <div>
+              <p class="text-cyan-400 font-semibold">Light Penetration</p>
+              <p class="text-white font-bold">100% → 1%</p>
+            </div>
+            <div>
+              <p class="text-cyan-400 font-semibold">Pressure</p>
+              <p class="text-white font-bold">1 to 20 atm</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mesopelagic -->
+        <div class="bg-[#0b1f2d] border border-cyan-700/30 rounded-2xl p-6 relative overflow-hidden group hover:border-cyan-400/50 transition">
+          <div class="flex justify-between items-start mb-4">
+            <span class="text-2xl">🌌</span>
+            <span class="px-2.5 py-1 bg-cyan-950/80 text-cyan-300 text-[10px] font-bold rounded-full border border-cyan-500/30">200m — 1,000m</span>
+          </div>
+          <h3 class="text-lg font-bold text-cyan-50 mb-1">Mesopelagic Zone</h3>
+          <p class="text-xs text-cyan-200/60 mb-6">The Twilight Realm. Site of Earth's largest daily animal migration as biomass rises under dusk.</p>
+          <div class="grid grid-cols-2 gap-2 text-[11px] pt-4 border-t border-cyan-900/50">
+            <div>
+              <p class="text-cyan-400 font-semibold">Light Penetration</p>
+              <p class="text-white font-bold">&lt; 1% (Faint Indigo)</p>
+            </div>
+            <div>
+              <p class="text-cyan-400 font-semibold">Pressure</p>
+              <p class="text-white font-bold">20 to 100 atm</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bathypelagic & Abyss -->
+        <div class="bg-[#07151e] border border-cyan-700/30 rounded-2xl p-6 relative overflow-hidden group hover:border-cyan-400/50 transition">
+          <div class="flex justify-between items-start mb-4">
+            <span class="text-2xl">🌑</span>
+            <span class="px-2.5 py-1 bg-cyan-950/80 text-cyan-300 text-[10px] font-bold rounded-full border border-cyan-500/30">1,000m — 6,000m+</span>
+          </div>
+          <h3 class="text-lg font-bold text-cyan-50 mb-1">Bathypelagic & Abyss</h3>
+          <p class="text-xs text-cyan-200/60 mb-6">The Midnight Zone. Total darkness illuminated only by chemical bioluminescence and hydrothermal vents.</p>
+          <div class="grid grid-cols-2 gap-2 text-[11px] pt-4 border-t border-cyan-900/50">
+            <div>
+              <p class="text-cyan-400 font-semibold">Light Penetration</p>
+              <p class="text-white font-bold">0% Absolute</p>
+            </div>
+            <div>
+              <p class="text-cyan-400 font-semibold">Water Temp</p>
+              <p class="text-white font-bold">~1 °C – 4 °C</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= OCEAN HEALTH & SAFEGUARDING THE COMMONS ================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Critical Threats & Agency</span>
+      <h2 class="font-serif text-3xl font-bold text-slate-900 mt-1">Safeguarding the Global Commons</h2>
+      <p class="text-sm text-slate-600 mt-2">
+        Understanding anthropogenic pressure dismantling marine & terrestrial ecosystems and supporting direct citizen-led interventions.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Ocean Acidification Card -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold mb-4">
+            pH
+          </div>
+          <h3 class="font-bold text-slate-900 text-base mb-2">Ocean Acidification (pH 8.1 → 7.8)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Excess carbon dioxide reacts with seawater to form carbonic acid, stripping ocean waters of carbonate ions required by pteropods, mollusks, and stony corals to build protective skeletons.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-slate-100">
+          <p class="text-[10px] font-bold uppercase text-slate-400">Direct Citizen Action</p>
+          <p class="text-xs text-emerald-800 font-medium mt-1">Support local renewable transition initiatives and consume lower on the aquatic trophic chain.</p>
+        </div>
+      </div>
+
+      <!-- Microplastics in Pelagic Gyres -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold mb-4">
+            ♳
+          </div>
+          <h3 class="font-bold text-slate-900 text-base mb-2">Microplastics in Pelagic Gyres</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Over 170 trillion plastic particles circulate in pelagic convergence zones. Filter-feeding cetaceans and planktonic larvae ingest persistent organic pollutants, bioaccumulating toxins across the marine pyramid.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-slate-100">
+          <p class="text-[10px] font-bold uppercase text-slate-400">Direct Citizen Action</p>
+          <p class="text-xs text-emerald-800 font-medium mt-1">Install micro-fiber washing machine filters to arrest clothing runoff and eliminate single-use consumer packaging.</p>
+        </div>
+      </div>
+
+      <!-- Naturalist Commitment Card -->
+      <div class="bg-gradient-to-br from-[#123024] to-[#0b1d16] text-white rounded-2xl p-6 shadow-md flex flex-col justify-between">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase mb-4">
+            Naturalist Commitment
+          </div>
+          <h3 class="font-bold text-white text-lg mb-2">Every Drop Matters: 4 Vital Steps</h3>
+          <ul class="text-xs text-emerald-100/80 space-y-2.5 my-3">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400">✓</span>
+              <span><strong>Reef-Safe Sunscreens:</strong> Omit oxybenzone & octinoxate.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400">✓</span>
+              <span><strong>Certified Sustainable Seafood:</strong> Strictly verify MSC/ASC labels.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400">✓</span>
+              <span><strong>Support Marine Sanctuaries:</strong> Advocate for the 30x30 High Seas Treaty.</span>
+            </li>
+          </ul>
+        </div>
+        <button onclick="openModal('pledgeModal')" class="w-full mt-4 py-2.5 bg-emerald-400 hover:bg-emerald-300 text-emerald-950 font-bold rounded-xl text-xs transition shadow">
+          Pledge for Marine Conservation →
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER (MATCHING SCREENSHOT) ================= -->
+  <footer class="bg-white border-t border-slate-200 pt-16 pb-12 text-slate-600 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-200">
+        
+        <!-- Foundation Info -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-emerald-900 flex items-center justify-center text-emerald-300">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span class="font-display font-bold text-lg text-slate-900">NatureWorld</span>
+          </div>
+          <p class="text-slate-500 leading-relaxed max-w-sm">
+            Dedicated to the awe-inspiring celebration, rigorous scientific documentation, and relentless stewardship of Earth's biological marvels and fragile ecosystems.
+          </p>
+          <div class="pt-2">
+            <p class="font-semibold text-slate-800 text-[11px] mb-1">The Living Planet Dispatch</p>
+            <form onsubmit="handleNewsletter(event)" class="flex gap-2 max-w-sm">
+              <input type="email" required placeholder="Enter your naturalist email..." class="bg-slate-100 border border-slate-200 px-3 py-2 rounded-lg text-xs flex-1 outline-none focus:ring-2 focus:ring-emerald-700"/>
+              <button type="submit" class="bg-emerald-900 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-950 transition">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Curated Biomes -->
+        <div>
+          <h4 class="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">Curated Biomes</h4>
+          <ul class="space-y-2">
+            <li><a href="#" onclick="filterByCustom('Rainforest')" class="hover:text-emerald-800">Tropical Rainforests</a></li>
+            <li><a href="#" onclick="filterByCustom('Tundra')" class="hover:text-emerald-800">Glacial Tundras & Ice</a></li>
+            <li><a href="#" onclick="filterByCustom('Arid')" class="hover:text-emerald-800">Arid & Deserts</a></li>
+            <li><a href="#" onclick="filterByCustom('Pelagic')" class="hover:text-emerald-800">Pelagic Open Oceans</a></li>
+            <li><a href="#" onclick="filterByCustom('Reef')" class="hover:text-emerald-800">Coral Reef Sanctuaries</a></li>
+            <li><a href="#" onclick="filterByCustom('Montane')" class="hover:text-emerald-800">Montane Cloud Forests</a></li>
+          </ul>
+        </div>
+
+        <!-- Initiatives & Trust -->
+        <div>
+          <h4 class="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">Initiatives & Trust</h4>
+          <ul class="space-y-2">
+            <li><a href="#" onclick="openModal('aboutModal')" class="hover:text-emerald-800">About NatureWorld</a></li>
+            <li><a href="#" onclick="openModal('aboutModal')" class="hover:text-emerald-800">Re-Wilding Earth Alliance</a></li>
+            <li><a href="#" onclick="openModal('aboutModal')" class="hover:text-emerald-800">Indigenous Land Rights</a></li>
+            <li><a href="#" onclick="openModal('aboutModal')" class="hover:text-emerald-800">Field Notes & Expeditions</a></li>
+            <li><a href="#" onclick="openModal('aboutModal')" class="hover:text-emerald-800">IUCN Red List Watch</a></li>
+            <li><a href="#" onclick="openModal('aboutModal')" class="hover:text-emerald-800">Support a Living Basin</a></li>
+          </ul>
+        </div>
+
+        <!-- Global Connect & Legal -->
+        <div>
+          <h4 class="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">Global Connect</h4>
+          <ul class="space-y-2">
+            <li><a href="#" onclick="openModal('contactModal')" class="hover:text-emerald-800">Editorial Submissions</a></li>
+            <li><a href="#" onclick="openModal('contactModal')" class="hover:text-emerald-800">Wildlife Photographer Grants</a></li>
+            <li><a href="#" onclick="openModal('contactModal')" class="hover:text-emerald-800">Regional Ranger Network</a></li>
+            <li><a href="#" onclick="openModal('contactModal')" class="hover:text-emerald-800">Press & Media Kits</a></li>
+            <li><a href="#" onclick="openModal('privacyModal')" class="hover:text-emerald-800 font-semibold text-emerald-900">Privacy & Taxonomic Terms</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Copyright & Credits -->
+      <div class="flex flex-col sm:flex-row items-center justify-between pt-8 gap-4 text-[11px] text-slate-400">
+        <p>© 2026 NatureWorld Foundation. All rights reserved. Photographic works under Earth Archives attribution.</p>
+        <div class="flex gap-4">
+          <a href="#" onclick="openModal('privacyModal')" class="hover:text-slate-600">Privacy Framework</a>
+          <a href="#" onclick="openModal('privacyModal')" class="hover:text-slate-600">Taxonomic Terms</a>
+          <a href="#" onclick="openModal('privacyModal')" class="hover:text-slate-600">Satellite Attribution</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= SPECIMEN DETAIL MODAL ================= -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+      <button onclick="closeModal('detailModal')" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition">
+        ✕
+      </button>
+      <div id="modal-content-area">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ABOUT / PRIVACY / PLEDGE MODALS ================= -->
+  <div id="pledgeModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('pledgeModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800">✕</button>
+      <h3 class="font-serif text-2xl font-bold text-slate-900 mb-2">Join the NatureWorld Biosphere Pledge</h3>
+      <p class="text-xs text-slate-600 mb-4">Make a tangible commitment to wildlife habitat preservation, zero single-use plastics, and supporting verified ranger networks worldwide.</p>
+      <form onsubmit="submitPledge(event)" class="space-y-3">
+        <div>
+          <label class="text-xs font-semibold text-slate-700 block mb-1">Full Name</label>
+          <input type="text" required class="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-700 outline-none" placeholder="Jane Goodall"/>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-slate-700 block mb-1">Email</label>
+          <input type="email" required class="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-700 outline-none" placeholder="naturalist@earth.org"/>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-slate-700 block mb-1">Primary Biome Focus</label>
+          <select class="w-full text-xs px-3 py-2 border rounded-lg outline-none">
+            <option>Rainforest & Cloud Canopy</option>
+            <option>Pelagic Oceans & Coral Reefs</option>
+            <option>Savannahs & Montane Grasslands</option>
+            <option>Arctic & Alpine Glaciers</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-emerald-900 text-white font-bold text-xs rounded-xl hover:bg-emerald-950 transition">Confirm Naturalist Pledge</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="privacyModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 max-h-[80vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-serif text-xl font-bold text-slate-900">Privacy & Scientific Attribution Framework</h3>
+        <button onclick="closeModal('privacyModal')" class="text-slate-400 hover:text-slate-700">✕</button>
+      </div>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>1. Zero Specimen Location Exploitation:</strong> Exact GPS coordinates for critically endangered (CR) specimens are deliberately scrambled by a 25km privacy buffer to prevent illegal poaching or unregulated tourism disruption.</p>
+        <p><strong>2. Taxonomic Authenticity:</strong> All nomenclature follows the Integrated Taxonomic Information System (ITIS) and the IUCN Red List of Threatened Species 2025/2026 data standards.</p>
+        <p><strong>3. Imagery & Provenance:</strong> Photographs are licensed under Unsplash, Wikimedia Commons (CC-BY-SA), and verified Earth Archives licenses with explicit metadata credits.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="contactModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-serif text-xl font-bold text-slate-900">Contact NatureWorld Field Bureau</h3>
+        <button onclick="closeModal('contactModal')" class="text-slate-400">✕</button>
+      </div>
+      <p class="text-xs text-slate-600 mb-4">Send dispatch inquiries, field report submissions, or academic corrections directly to our taxonomic committee.</p>
+      <form onsubmit="alert('Message transmitted to Field Desk.'); closeModal('contactModal'); return false;" class="space-y-3">
+        <input type="text" placeholder="Your Name" class="w-full text-xs px-3 py-2 border rounded-lg" required />
+        <input type="email" placeholder="Your Email" class="w-full text-xs px-3 py-2 border rounded-lg" required />
+        <textarea placeholder="Field Report / Inquiry Details..." rows="4" class="w-full text-xs px-3 py-2 border rounded-lg" required></textarea>
+        <button type="submit" class="w-full py-2 bg-emerald-900 text-white font-bold text-xs rounded-lg">Transmit Dispatch</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= COMPLETE TAXONOMIC SCRIPT & MULTILINGUAL SYSTEM ================= -->
+  <script>
+    /* ----------------------------------------------------
+       1. MULTILINGUAL DICTIONARY (10 LANGUAGES WITH RTL)
+    ---------------------------------------------------- */
+    const I18N = {
+      en: {
+        dir: "ltr",
+        subbrand: "Explore Our Living Planet",
+        navAll: "Explore",
+        navWildlife: "Wild Animals",
+        navMarine: "Marine Life",
+        navFlora: "Flora & Rainforests",
+        navWonders: "Natural Wonders",
+        navConservation: "Conservation",
+        joinBtn: "Join Conservation",
+        heroTitle: "Wild Animals & Living Wonders of the Earth",
+        heroDesc: "From apex predators reigning over open grasslands to secretive montane ghosts, coral bastions, and ancient trees—explore the keystone species orchestrating our living biosphere.",
+        tagFauna: "Terrestrial Fauna & Hydro-Biosphere Codex",
+        viewing: "Viewing",
+        entities: "cataloged entities"
+      },
+      si: {
+        dir: "ltr",
+        subbrand: "අපගේ ජීවමාන ග්‍රහලෝකය ගවේෂණය කරන්න",
+        navAll: "සියල්ල",
+        navWildlife: "වන සතුන්",
+        navMarine: "සාගර ජීවීන්",
+        navFlora: "ශාක හා වැසි වනාන්තර",
+        navWonders: "ස්වභාවික ආශ්චර්යයන්",
+        navConservation: "සංරක්ෂණය",
+        joinBtn: "සංරක්ෂණයට එක්වන්න",
+        heroTitle: "පෘථිවියේ වන සතුන් සහ ජීවමාන ආශ්චර්යයන්",
+        heroDesc: "විවෘත තෘණ භූමි පාලනය කරන විලෝපිකයන්ගේ සිට සාගර කොරල් සහ පුරාණ ගස් දක්වා—අපගේ ජෛවගෝලය සුරකින සුවිශේෂී විශේෂයන් ගවේෂණය කරන්න.",
+        tagFauna: "භෞමික හා සාගරික ජෛව කෝඩෙක්ස්",
+        viewing: "දර්ශනය කරන්නේ",
+        entities: "ලියාපදිංචි විශේෂ"
+      },
+      ta: {
+        dir: "ltr",
+        subbrand: "நமது வாழும் கிரகத்தை ஆராயுங்கள்",
+        navAll: "ஆராய்க",
+        navWildlife: "வன விலங்குகள்",
+        navMarine: "கடல் வாழ் உயிரினங்கள்",
+        navFlora: "தாவரங்கள் & காடுகள்",
+        navWonders: "இயற்கை அதிசயங்கள்",
+        navConservation: "பாதுகாப்பு",
+        joinBtn: "பாதுகாப்பில் இணையுங்கள்",
+        heroTitle: "பூமியின் வனவிலங்குகள் மற்றும் இயற்கை அதிசயங்கள்",
+        heroDesc: "புல்வெளிகளில் வாழும் வேட்டையாடும் விலங்குகள் முதல் ஆழ்கடல் பவளப்பாறைகள் வரை நமது பூமியை உயிர்ப்புடன் வைத்திருக்கும் உயிரினங்களை ஆராயுங்கள்.",
+        tagFauna: "உயிரியல் பாதுகாப்பு ஆவணம்",
+        viewing: "பார்வை",
+        entities: "பதிவு செய்யப்பட்ட உயிரினங்கள்"
+      },
+      hi: {
+        dir: "ltr",
+        subbrand: "हमारे जीवंत ग्रह का अन्वेषण करें",
+        navAll: "अन्वेषण",
+        navWildlife: "वन्य जीव",
+        navMarine: "समुद्री जीवन",
+        navFlora: "वनस्पति और वर्षावन",
+        navWonders: "प्राकृतिक चमत्कार",
+        navConservation: "संरक्षण",
+        joinBtn: "संरक्षण में शामिल हों",
+        heroTitle: "पृथ्वी के वन्य जीव और जीवित प्राकृतिक चमत्कार",
+        heroDesc: "घास के मैदानों के शीर्ष शिकारियों से लेकर गहरे समुद्र की मूंगा चट्टानों और प्राचीन जंगलों तक—हमारे जीवमंडल को संतुलित रखने वाली प्रजातियों को जानें।",
+        tagFauna: "वैश्विक जैव विविधता सूचकांक",
+        viewing: "प्रदर्शित",
+        entities: "सूचीबद्ध प्रजातियां"
+      },
+      ar: {
+        dir: "rtl",
+        subbrand: "استكشف كوكبنا الحي",
+        navAll: "استكشف",
+        navWildlife: "الحيوانات البرية",
+        navMarine: "الحياة البحرية",
+        navFlora: "النباتات والغابات",
+        navWonders: "عجائب الطبيعة",
+        navConservation: "حماية البيئة",
+        joinBtn: "انضم للحماية",
+        heroTitle: "الحيوانات البرية وعجائب الأرض الحية",
+        heroDesc: "من المفترسات المهيمنة على السافانا إلى أعماق المحيطات والشعاب المرجانية والأشجار المعمرة—استكشف الأنواع المحورية التي تحفظ توازن كوكبنا.",
+        tagFauna: "سجل الحياة البرية والمحيطية",
+        viewing: "عرض",
+        entities: "كائنات موثقة"
+      },
+      zh: {
+        dir: "ltr",
+        subbrand: "探索我们生机勃勃的星球",
+        navAll: "探索",
+        navWildlife: "野生动物",
+        navMarine: "海洋生物",
+        navFlora: "植物与雨林",
+        navWonders: "自然奇观",
+        navConservation: "生态保护",
+        joinBtn: "加入保护",
+        heroTitle: "地球上的野生动物与生命奇迹",
+        heroDesc: "从辽阔草原上的顶级捕食者，到神秘深海的珊瑚堡垒与古老参天古树——探索维系地球生物圈的关键物种。",
+        tagFauna: "陆地与海洋生态生物典",
+        viewing: "正在查看",
+        entities: "种已收录物种"
+      },
+      ja: {
+        dir: "ltr",
+        subbrand: "生きている地球を探検する",
+        navAll: "探索",
+        navWildlife: "野生動物",
+        navMarine: "海洋生物",
+        navFlora: "植物と熱帯雨林",
+        navWonders: "自然の驚異",
+        navConservation: "自然保護",
+        joinBtn: "保護活動に参加",
+        heroTitle: "地球の野生動物と生命の驚異",
+        heroDesc: "大草原の頂点捕食者から、深海のサンゴ礁、太古の巨木まで—私たちの生物圏を支えるキーストーン種を探検してください。",
+        tagFauna: "地球生物圏分類体系",
+        viewing: "表示中",
+        entities: "件の登録種"
+      },
+      fr: {
+        dir: "ltr",
+        subbrand: "Explorez Notre Planète Vivante",
+        navAll: "Explorer",
+        navWildlife: "Animaux Sauvages",
+        navMarine: "Vie Marine",
+        navFlora: "Flore & Forêts",
+        navWonders: "Merveilles Naturelles",
+        navConservation: "Conservation",
+        joinBtn: "Rejoindre la Cause",
+        heroTitle: "Faune Sauvage & Merveilles Vivantes de la Terre",
+        heroDesc: "Des prédateurs suprêmes régnant sur les savanes aux créatures pélagiques et arbres millénaires—découvrez les espèces clés de notre biosphère.",
+        tagFauna: "Codex Faune Terrestre & Hydro-Biosphère",
+        viewing: "Affichage",
+        entities: "entités cataloguées"
+      },
+      es: {
+        dir: "ltr",
+        subbrand: "Explora Nuestro Planeta Vivo",
+        navAll: "Explorar",
+        navWildlife: "Animales Salvajes",
+        navMarine: "Vida Marina",
+        navFlora: "Flora y Selvas",
+        navWonders: "Maravillas Naturales",
+        navConservation: "Conservación",
+        joinBtn: "Unirse a la Causa",
+        heroTitle: "Animales Salvajes y Maravillas Vivas de la Tierra",
+        heroDesc: "Desde los depredadores que reinan en las sabanas hasta los corales oceánicos y árboles milenarios: explora las especies clave de la biosfera.",
+        tagFauna: "Códice de Fauna Terrestre e Hidrosfera",
+        viewing: "Viendo",
+        entities: "entidades catalogadas"
+      },
+      de: {
+        dir: "ltr",
+        subbrand: "Erkunde Unseren Lebendigen Planeten",
+        navAll: "Erkunden",
+        navWildlife: "Wildtiere",
+        navMarine: "Meeresleben",
+        navFlora: "Flora & Regenwälder",
+        navWonders: "Naturwunder",
+        navConservation: "Artenschutz",
+        joinBtn: "Artenschutz Beitreten",
+        heroTitle: "Wildtiere & Lebendige Wunder der Erde",
+        heroDesc: "Von Spitzenprädatoren der Savannen bis zu Tiefsee-Korallen und Urwaldriesen—entdecken Sie die Schlüsselarten unserer lebendigen Biosphäre.",
+        tagFauna: "Terrestrischer & Ozeanischer Biodiversitäts-Kodex",
+        viewing: "Angezeigt",
+        entities: "erfasste Arten"
+      }
+    };
+
+    /* ----------------------------------------------------
+       2. COMPREHENSIVE HIGH-FIDELITY SPECIES DATABASE
+       (Matching exactly screenshot 1 & screenshot 2 items)
+    ---------------------------------------------------- */
+    const SPECIMENS = [
+      {
+        id: "african-lion",
+        commonName: "African Lion",
+        scientificName: "Panthera leo",
+        category: "wildlife",
+        biome: "Sub-Saharan Savannas",
+        region: "East & Southern Africa",
+        threatStatus: "VU",
+        threatLabel: "VULNERABLE",
+        niche: "HYPERCARNIVORE",
+        image: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
+        caption: "The sole truly social felid. Prides maintain territorial dominance across expansive open grasslands.",
+        metric1Label: "SOCIAL UNIT",
+        metric1Val: "Pride (Up to 40)",
+        metric2Label: "GLOBAL POPULATION",
+        metric2Val: "~23,000 mature",
+        diet: "Carnivore (Ungulates)",
+        details: "Lions are key apex predators holding herbivore numbers in equilibrium. Habitat fragmentation and human-wildlife conflict remain their foremost threats."
+      },
+      {
+        id: "bengal-tiger",
+        commonName: "Bengal Tiger",
+        scientificName: "Panthera tigris tigris",
+        category: "wildlife",
+        biome: "Sundarbans & Central Forests",
+        region: "Indian Subcontinent",
+        threatStatus: "EN",
+        threatLabel: "ENDANGERED",
+        niche: "APEX PREDATOR",
+        image: "https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=800&q=80",
+        caption: "Solitary ambush hunter masterfully adapted to swimming tidal mangroves and dense deciduous teak forests.",
+        metric1Label: "TERRITORY SPAN",
+        metric1Val: "30 - 100 km²",
+        metric2Label: "GLOBAL COUNT",
+        metric2Val: "~3,159 wild",
+        diet: "Carnivore (Chital, Sambar)",
+        details: "Requires contiguous dense forest corridors. Project Tiger reserves in India and Nepal have shown vital conservation rebounds."
+      },
+      {
+        id: "bush-elephant",
+        commonName: "African Bush Elephant",
+        scientificName: "Loxodonta africana",
+        category: "wildlife",
+        biome: "East & Southern Basin",
+        region: "Continental Africa",
+        threatStatus: "EN",
+        threatLabel: "ENDANGERED",
+        niche: "MEGAGARDENER HERBIVORE",
+        image: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=800&q=80",
+        caption: "Earth's largest land mammal and a vital keystone ecosystem architect shaping hydrology and tree dispersals.",
+        metric1Label: "KEYSTONE FUNCTION",
+        metric1Val: "Seed Disperser & Digger",
+        metric2Label: "WEIGHT",
+        metric2Val: "Up to 6,000 kg",
+        diet: "Herbivore (Grasses, Bark)",
+        details: "Infrasound communication travels tens of miles through soil, enabling multi-herd cohesion across savannah basins."
+      },
+      {
+        id: "snow-leopard",
+        commonName: "Snow Leopard",
+        scientificName: "Panthera uncia",
+        category: "wildlife",
+        biome: "Himalayas & Tian Shan",
+        region: "Central Asia",
+        threatStatus: "VU",
+        threatLabel: "VULNERABLE",
+        niche: "ALPINE CARNIVORE",
+        image: "https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?auto=format&fit=crop&w=800&q=80",
+        caption: "The 'Ghost of the Mountains.' Camouflaged fur and wide fur-padded paws engineered for shear scree and glacial cliffs.",
+        metric1Label: "ALTITUDE RANGE",
+        metric1Val: "3,000 - 5,500 m",
+        metric2Label: "STATUS",
+        metric2Val: "~4,000 in wild",
+        diet: "Blue Sheep (Bharal), Ibex",
+        details: "Essential indicator of glacial watershed health throughout the high mountains of 12 Asian nations."
+      },
+      {
+        id: "mountain-gorilla",
+        commonName: "Mountain Gorilla",
+        scientificName: "Gorilla beringei beringei",
+        category: "wildlife",
+        biome: "Virunga & Bwindi",
+        region: "Albertine Rift",
+        threatStatus: "EN",
+        threatLabel: "ENDANGERED",
+        niche: "FOLIVORE HERBIVORE",
+        image: "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80",
+        caption: "Gentle giants navigating dense high-altitude cloud forests. Structured in complex matriarchal and silverback troops.",
+        metric1Label: "TROOP HIERARCHY",
+        metric1Val: "1 Silverback, 4-20 females",
+        metric2Label: "CONSERVATION TRAJECTORY",
+        metric2Val: "Increasing (1,063)",
+        diet: "Bamboo shoots, Celery",
+        details: "One of conservation's landmark triumphs: intensive community ranger surveillance turned an extinctive decline into steady population growth."
+      },
+      {
+        id: "plains-zebra",
+        commonName: "Plains Zebra",
+        scientificName: "Equus quagga",
+        category: "wildlife",
+        biome: "East African Grasslands",
+        region: "Great Rift Valley",
+        threatStatus: "NT",
+        threatLabel: "NEAR THREATENED",
+        niche: "GRAZING HERBIVORE",
+        image: "https://images.unsplash.com/photo-1526095179574-86e545346ae6?auto=format&fit=crop&w=800&q=80",
+        caption: "Every individual possesses a fingerprint-unique stripe barcode disrupting tsetse fly polarized vision.",
+        metric1Label: "MIGRATION DISTANCE",
+        metric1Val: "Up to 800 km yearly",
+        metric2Label: "STRIPES FUNCTION",
+        metric2Val: "Polarizing Camouflage",
+        diet: "Pioneer bulk coarse grasses",
+        details: "Pioneer grazers that ingest tough fibrous stems, opening softer nutritious grass leaves for subsequent wildebeest and gazelle herds."
+      },
+      {
+        id: "grizzly-bear",
+        commonName: "Grizzly Bear",
+        scientificName: "Ursus arctos horribilis",
+        category: "wildlife",
+        biome: "Katmai & Northern Rockies",
+        region: "North America",
+        threatStatus: "LC",
+        threatLabel: "LEAST CONCERN",
+        niche: "APEX OMNIVORE",
+        image: "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=800&q=80",
+        caption: "Vital nutrient bridge linking marine salmon biomes with inland temperate forest soils through salmon carcass foraging.",
+        metric1Label: "SPRINT SPEED",
+        metric1Val: "56 km/h bursts",
+        metric2Label: "TORPOR REDUCTION",
+        metric2Val: "Heartbeat ~8 bpm",
+        diet: "Berries, Salmon, Roots",
+        details: "Spreads nitrogen-15 isotopes from oceanic salmon deep into continental forests, fertilizing massive Sitka spruce groves."
+      },
+      {
+        id: "sri-lankan-leopard",
+        commonName: "Sri Lankan Leopard",
+        scientificName: "Panthera pardus kotiya",
+        category: "wildlife",
+        biome: "Yala & Wilpattu",
+        region: "Sri Lanka",
+        threatStatus: "VU",
+        threatLabel: "VULNERABLE",
+        niche: "ISLAND APEX HUNTER",
+        image: "https://images.unsplash.com/photo-1456926631375-92c8ce872def?auto=format&fit=crop&w=800&q=80",
+        caption: "With no competing tigers or lions on the island, this subspecies evolved uninhibited day-hunting dominance.",
+        metric1Label: "ENDEMIC STATUS",
+        metric1Val: "Sri Lanka Exclusive",
+        metric2Label: "WILD POPULATION",
+        metric2Val: "< 800 adults",
+        diet: "Spotted deer, Barking deer",
+        details: "Yala National Park hosts one of the highest recorded leopard population densities in the world."
+      },
+      /* --- MARINE LIFE SPECIMENS (SCREENSHOT 2) --- */
+      {
+        id: "blue-whale",
+        commonName: "Blue Whale",
+        scientificName: "Balaenoptera musculus",
+        category: "marine",
+        biome: "Epipelagic (0 - 200m)",
+        region: "Global Oceans",
+        threatStatus: "EN",
+        threatLabel: "ENDANGERED",
+        niche: "PELAGIC FILTER FEEDER",
+        image: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?auto=format&fit=crop&w=800&q=80",
+        caption: "Earth's largest living animal. Consuming up to 4 metric tons of euphausiid krill daily, each specimen sequesters immense atmospheric carbon.",
+        metric1Label: "TROPHIC LEVEL",
+        metric1Val: "Level 3.2",
+        metric2Label: "WEIGHT",
+        metric2Val: "~190 Metric Tons",
+        diet: "Krill (Euphausiids)",
+        details: "When a whale dies, its body falls to the abyssal plain ('whale fall'), nourishing unique deep-sea benthic organisms for over a century."
+      },
+      {
+        id: "green-turtle",
+        commonName: "Green Sea Turtle",
+        scientificName: "Chelonia mydas",
+        category: "marine",
+        biome: "Coral Reefs & Neritic",
+        region: "Tropical Oceans",
+        threatStatus: "EN",
+        threatLabel: "ENDANGERED",
+        niche: "KEYSTONE HERBIVORE",
+        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80",
+        caption: "Ancient mariners with remarkable geomagnetic navigational imprinting. Primary grazers maintaining healthy seabed seagrass beds.",
+        metric1Label: "KEYSTONE HERBIVORE",
+        metric1Val: "Seagrass Pruner",
+        metric2Label: "LIFESPAN",
+        metric2Val: "70+ Years",
+        diet: "Seagrasses and algae",
+        details: "By grazing seagrass blades, turtles stimulate new root growth, supporting juvenile fish nurseries worldwide."
+      },
+      {
+        id: "great-white-shark",
+        commonName: "Great White Shark",
+        scientificName: "Carcharodon carcharias",
+        category: "marine",
+        biome: "Epipelagic (0 - 1,200m)",
+        region: "Temperate Oceans",
+        threatStatus: "VU",
+        threatLabel: "VULNERABLE",
+        niche: "APEX PREDATOR",
+        image: "https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&w=800&q=80",
+        caption: "Apex regulator endowed with electroreceptive ampullae of Lorenzini sensing minute nano-volt muscle contractions of prey.",
+        metric1Label: "APEX PREDATOR",
+        metric1Val: "Trophic Regulator",
+        metric2Label: "TOP SPEED",
+        metric2Val: "56 km/h",
+        diet: "Pinnipeds, Tuna",
+        details: "Regulates seal populations, preventing over-predation on commercially vital fish nurseries."
+      },
+      {
+        id: "giant-pacific-octopus",
+        commonName: "Giant Pacific Octopus",
+        scientificName: "Enteroctopus dofleini",
+        category: "marine",
+        biome: "Benthic / Mesopelagic",
+        region: "North Pacific Rim",
+        threatStatus: "LC",
+        threatLabel: "LEAST CONCERN",
+        niche: "INTELLIGENT BENTHIC",
+        image: "https://images.unsplash.com/photo-1545671913-b89ac1b4ac10?auto=format&fit=crop&w=800&q=80",
+        caption: "Cephalopod intellect exhibiting complex tool manipulation, neural-guided rapid chromatophore camouflage, and three hearts.",
+        metric1Label: "NEURONS",
+        metric1Val: "500 Million",
+        metric2Label: "ARM SPAN",
+        metric2Val: "Up to 6.0 m",
+        diet: "Crabs, Clams, Small Sharks",
+        details: "Two-thirds of its neurons are in its arms, meaning each arm can independently taste, touch, and solve spatial obstacles."
+      },
+      {
+        id: "clownfish",
+        commonName: "Clownfish Mutualism",
+        scientificName: "Amphiprioninae • Actiniaria",
+        category: "marine",
+        biome: "Coral Reef (1 - 30m)",
+        region: "Indo-Pacific",
+        threatStatus: "LC",
+        threatLabel: "LEAST CONCERN",
+        niche: "SYMBIOTIC SENTINEL",
+        image: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=800&q=80",
+        caption: "Obligate mutualism: thick mucosal dermal barriers grant immunity against cytotoxic nematocyst stings of host sea anemones.",
+        metric1Label: "SYMBIOTIC SENTINEL",
+        metric1Val: "Host Defender",
+        metric2Label: "MUCUS COAT",
+        metric2Val: "High-Saline Immunity",
+        diet: "Algae, Zooplankton",
+        details: "Clownfish ventilate water inside the anemone at night, preventing asphyxiation in hypoxic calm waters."
+      },
+      {
+        id: "giant-manta-ray",
+        commonName: "Giant Manta Ray",
+        scientificName: "Mobula birostris",
+        category: "marine",
+        biome: "Pelagic & Seamounts",
+        region: "Tropical Oceans",
+        threatStatus: "EN",
+        threatLabel: "ENDANGERED",
+        niche: "FILTER FEEDER",
+        image: "https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&w=800&q=80",
+        caption: "Gentle pelagic filter feeders holding the highest brain-to-body mass ratio of all cold-blooded marine fish.",
+        metric1Label: "WINGSPAN",
+        metric1Val: "Up to 7.0 m",
+        metric2Label: "FILTER EFFICIENCY",
+        metric2Val: "96% Planktonic Yield",
+        diet: "Euphausiids, Copepods",
+        details: "Known to frequent specialized cleaning stations at oceanic seamounts where wrasses remove epidermal parasites."
+      },
+      /* --- FLORA, FORESTS & NATURAL WONDERS --- */
+      {
+        id: "coast-redwood",
+        commonName: "Coast Redwood",
+        scientificName: "Sequoia sempervirens",
+        category: "flora",
+        biome: "Pacific Temperate Rainforest",
+        region: "North America",
+        threatStatus: "EN",
+        threatLabel: "ENDANGERED",
+        niche: "CANOPY GIANT",
+        image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80",
+        caption: "The tallest living trees on Earth. Absorbs up to 40% of their annual moisture directly from coastal summer fog banks.",
+        metric1Label: "HEIGHT CEILING",
+        metric1Val: "115.92 meters",
+        metric2Label: "MAX AGE",
+        metric2Val: "2,200+ years",
+        diet: "Photosynthesis & Fog condensation",
+        details: "Thick fire-resistant tannic bark protects older specimens against intense wildfires."
+      },
+      {
+        id: "iguazu-falls",
+        commonName: "Iguazú Falls & National Park",
+        scientificName: "Cataratas del Iguazú",
+        category: "wonders",
+        biome: "Subtropical Atlantic Forest",
+        region: "Americas (Argentina/Brazil)",
+        threatStatus: "LC",
+        threatLabel: "WORLD HERITAGE",
+        niche: "HYDROLOGIC MARVEL",
+        image: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80",
+        caption: "A monumental semicircular cataract spanning 2.7 kilometers, splitting the Iguazú River into 275 individual waterfalls.",
+        metric1Label: "FLOW RATE",
+        metric1Val: "1,746 m³/s",
+        metric2Label: "BIODIVERSITY",
+        metric2Val: "2,000 plant taxa",
+        diet: "Hydrologic basin catchment",
+        details: "Produces unique perpetual microclimates nurturing hundreds of rare orchid and butterfly species."
+      }
+    ];
+
+    /* ----------------------------------------------------
+       3. APPLICATION STATE & FILTER CONTROLLERS
+    ---------------------------------------------------- */
+    let currentLang = 'en';
+    let currentTab = 'all';
+    let currentView = 'mosaic';
+    let searchQuery = '';
+
+    function initApp() {
+      renderSpecimens();
+    }
+
+    // Change Language & RTL Setting
+    function changeLanguage(langKey) {
+      if (!I18N[langKey]) return;
+      currentLang = langKey;
+      const t = I18N[langKey];
+      
+      // Update HTML direction attribute for RTL languages like Arabic
+      document.documentElement.setAttribute('dir', t.dir);
+      document.documentElement.setAttribute('lang', langKey);
+
+      // Translate DOM nodes
+      document.getElementById('i18n-subbrand').innerText = t.subbrand;
+      document.getElementById('nav-all').innerText = t.navAll;
+      document.getElementById('nav-wildlife').innerText = t.navWildlife;
+      document.getElementById('nav-marine').innerText = t.navMarine;
+      document.getElementById('nav-flora').innerText = t.navFlora;
+      document.getElementById('nav-wonders').innerText = t.navWonders;
+      document.getElementById('nav-conservation').innerText = t.navConservation;
+      document.getElementById('txt-join').innerText = t.joinBtn;
+      document.getElementById('hero-title').innerText = t.heroTitle;
+      document.getElementById('hero-desc').innerText = t.heroDesc;
+      document.getElementById('hero-tag').innerText = t.tagFauna;
+
+      renderSpecimens();
+    }
+
+    // Tab Navigation
+    function setTab(tabName) {
+      currentTab = tabName;
+      document.querySelectorAll('.nav-tab').forEach(el => {
+        if(el.getAttribute('data-tab') === tabName) {
+          el.className = "nav-tab px-3 py-2 rounded-lg bg-emerald-50 text-emerald-950 font-semibold transition";
+        } else {
+          el.className = "nav-tab px-3 py-2 rounded-lg text-slate-700 hover:text-emerald-900 hover:bg-emerald-50 transition";
+        }
+      });
+      // Synchronize biome select
+      const biomeSelect = document.getElementById('biome-filter');
+      if (tabName !== 'all') {
+        biomeSelect.value = tabName;
+      } else {
+        biomeSelect.value = 'all';
+      }
+      applyFilters();
+    }
+
+    function setView(viewMode) {
+      currentView = viewMode;
+      const bMosaic = document.getElementById('view-mosaic');
+      const bEncyclo = document.getElementById('view-encyclo');
+      if(viewMode === 'mosaic') {
+        bMosaic.className = "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white shadow-sm text-emerald-950 transition";
+        bEncyclo.className = "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-emerald-950 transition";
+      } else {
+        bEncyclo.className = "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white shadow-sm text-emerald-950 transition";
+        bMosaic.className = "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-emerald-950 transition";
+      }
+      renderSpecimens();
+    }
+
+    function handleSearch(q) {
+      searchQuery = q.toLowerCase().trim();
+      applyFilters();
+    }
+
+    function filterByCustom(term) {
+      searchQuery = term.toLowerCase();
+      document.getElementById('filter-search').value = term;
+      applyFilters();
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+
+    function applyFilters() {
+      const biomeVal = document.getElementById('biome-filter').value;
+      const statusVal = document.getElementById('status-filter').value;
+      const regionVal = document.getElementById('region-filter').value;
+
+      const filtered = SPECIMENS.filter(item => {
+        // Tab / Biome filter
+        const matchBiome = (biomeVal === 'all') || (item.category === biomeVal);
+        // Status filter
+        const matchStatus = (statusVal === 'all') || (item.threatStatus === statusVal);
+        // Region filter
+        const matchRegion = (regionVal === 'all') || (item.region.includes(regionVal));
+        // Search text
+        const matchSearch = !searchQuery || 
+          item.commonName.toLowerCase().includes(searchQuery) ||
+          item.scientificName.toLowerCase().includes(searchQuery) ||
+          item.biome.toLowerCase().includes(searchQuery) ||
+          item.region.toLowerCase().includes(searchQuery);
+
+        return matchBiome && matchStatus && matchRegion && matchSearch;
+      });
+
+      renderSpecimens(filtered);
+    }
+
+    function renderSpecimens(itemsToRender = SPECIMENS) {
+      const container = document.getElementById('specimens-container');
+      const countEl = document.getElementById('specimen-count');
+      countEl.innerText = itemsToRender.length;
+
+      if (itemsToRender.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-dashed border-slate-300">
+            <span class="text-3xl">🔭</span>
+            <p class="font-serif text-lg font-bold text-slate-800 mt-2">No matching taxa or biomes found</p>
+            <p class="text-xs text-slate-500 mt-1">Try resetting filters or expanding search parameters.</p>
+            <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-emerald-900 text-white text-xs font-bold rounded-xl">Reset All Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      // Check Layout Mode
+      if (currentView === 'encyclo') {
+        container.className = "flex flex-col gap-4";
+        container.innerHTML = itemsToRender.map(sp => `
+          <div onclick="openSpecimenDetail('${sp.id}')" class="cursor-pointer bg-white rounded-2xl p-4 border border-slate-200/80 hover:shadow-md transition flex flex-col md:flex-row items-center gap-5">
+            <img src="${sp.image}" alt="${sp.commonName}" class="w-full md:w-48 h-32 object-cover rounded-xl" loading="lazy"/>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(sp.threatStatus)}">${sp.threatStatus} • ${sp.threatLabel}</span>
+                <span class="text-[10px] text-slate-400 uppercase font-semibold">• ${sp.niche}</span>
+              </div>
+              <h3 class="font-bold text-slate-900 text-lg leading-tight">${sp.commonName} <span class="italic text-slate-500 text-sm font-normal">(${sp.scientificName})</span></h3>
+              <p class="text-xs text-slate-600 mt-1 line-clamp-2">${sp.caption}</p>
+            </div>
+            <div class="text-right text-xs shrink-0 pr-4 border-l pl-4 border-slate-100 hidden sm:block">
+              <p class="text-slate-400 uppercase font-bold text-[10px]">${sp.metric1Label}</p>
+              <p class="font-bold text-slate-800 text-sm">${sp.metric1Val}</p>
+            </div>
+          </div>
+        `).join('');
+        return;
+      }
+
+      // Mosaic Grid Mode (Exact Visual Structure of Screenshot 1 & 2 Cards)
+      container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6";
+      container.innerHTML = itemsToRender.ma
